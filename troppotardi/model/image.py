@@ -77,12 +77,6 @@ class Image(mapping.Document):
         super(Image, self).store(db)
 
         if image_file:
-            self.store_image(image_file)
-
-        return self
-
-    def store_image(self, image_file):
-        if image_file:
             format = imghdr.what(image_file)
             if format == 'png' or format == 'jpeg':
                 
@@ -108,6 +102,9 @@ class Image(mapping.Document):
                 shutil.copyfileobj(image_file, permanent_file)
                 image_file.close()
                 permanent_file.close()
+
+
+        return self
         
     def delete(self, db):
         # Delete image file
