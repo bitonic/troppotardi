@@ -11,6 +11,7 @@ from pylons import config, session, tmpl_context
 from troppotardi.lib.helpers import image_url, image_path
 from troppotardi.lib import slugify
 from troppotardi.lib.mapping import DayField
+from troppotardi.lib.image_utils import thumbnailer
 
 class Image(mapping.Document):
     type = mapping.TextField(default='Image')
@@ -45,13 +46,10 @@ class Image(mapping.Document):
             image = PILImage.open(self.path)
             (width, height) = image.size
             if max_width and width > max_width:
-                height = height * max_width / width
-                width = max_width
+                thumb = thumbnailer(self.path, max_width=max_width)
             if max_height and height > max_height:
-                width = width * max_height / height
-                height = max_height
-            return make_tag('a', href=self.url,
-                            c=tags.image(self.url, None, width=width, height=height))
+                thumb = thumbnailer(self.path, max_height=max_height)
+            return make_tag('a', href=self.url, c=tags.image(thumb))
 
     def store(self, db, accept=False, image_file=None, revised_by=None):
         if not self.submitted:
