@@ -81,7 +81,7 @@ class Image(mapping.Document):
 
         return self
 
-    def store_image(image_file):
+    def store_image(self, image_file):
         if image_file:
             format = imghdr.what(image_file)
             if format == 'png' or format == 'jpeg':
