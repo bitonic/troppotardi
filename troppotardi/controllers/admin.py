@@ -7,7 +7,7 @@ from pylons.decorators import validate
 
 from troppotardi.lib.base import BaseController, render
 from troppotardi.model import Image, User
-from troppotardi.model.forms import AddUser, EditUser
+from troppotardi.model.forms import AddUser, EditUser, EditImage
 from troppotardi.lib.helpers import flash
 from troppotardi.lib.utils import generate_password, send_email
 from troppotardi.lib import authorize
