@@ -100,6 +100,7 @@ class Image(mapping.Document):
                     self.filename = '1.' + format
                     """
                 self.filename = self.id + '.' + format
+                super(Image, self).store(db)
                 
                 permanent_file = open(self.path, 'w')
                 
