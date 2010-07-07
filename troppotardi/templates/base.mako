@@ -24,7 +24,7 @@
 </body>
 </html>
 
-<%def name="title()">troppotardi - </%def>
+<%def name="title()">troppo tardi - </%def>
 <%def name="heading()"></%def>
 <%def name="head()">
 <script src="/js/cufon-yui.js" type="text/javascript"></script>

@@ -4,7 +4,7 @@
   "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
-  <title>tropotardi</title>
+  <title>troppo tardi</title>
   ${h.stylesheet_link('/css/home.css')}
 </head>
 <body>

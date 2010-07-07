@@ -5,7 +5,7 @@ import imghdr
 from datetime import datetime
 from PIL import Image as PILImage
 
-from pylons import tmpl_context
+from pylons import tmpl_context, request
 from troppotardi.model import User, Image
 from troppotardi.lib.mapping import day_to_str
 
@@ -87,3 +87,7 @@ class UniqueDate(formencode.FancyValidator):
                         raise formencode.Invalid(
                             'The day you entered already exists.',
                             field_dict, state)
+
+"""
+class ReCaptcha(formencode.FancyValidator):
+   """ 
