@@ -67,7 +67,7 @@ def make_app(global_conf, full_stack=True, static_files=True, **app_conf):
 
     app.config = config
 
-    # Max upload size
+    # Limits the max upload size to 4 MB
     app = LimitUploadSize(app, 4000000)
 
     return app

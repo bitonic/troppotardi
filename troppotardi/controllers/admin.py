@@ -22,6 +22,7 @@ class AdminController(BaseController):
     @authorize('review_images')
     @dispatch_on(POST='_dopending')
     def pending(self):
+        # Gets every pending image
         c.images = Image.pending_by_time(self.db, descending=True)
 
         c.pending = True
@@ -30,14 +31,18 @@ class AdminController(BaseController):
     @authorize('review_images')
     @restrict('POST')
     def _dopending(self):
+        # These are all the images ticked with accept
         to_accept = request.POST.getall('accept')
         
+        # Accept all of them
         for id in to_accept:
             image = Image.load(self.db, id)
             image.store(self.db, accept=True, revised_by=session['user'])
         
+        # These are the ones to delete
         to_delete = request.POST.getall('delete')
         
+        # Delete them
         for id in to_delete:
             Image.load(self.db, id).delete(self.db)
             
@@ -45,6 +50,7 @@ class AdminController(BaseController):
 
     @authorize('review_images')
     def accepted(self):
+        # All the accepted images (the one with a scheduled day)
         c.images = Image.by_day(self.db, descending=True)
         
         c.pending = True
@@ -67,14 +73,19 @@ class AdminController(BaseController):
         image.author_url = request.params.getone('author_url')
         image.text = request.params.getone('text')
 
+        # "change_day" is a hidden field that indicates that the date
+        # is exposed in the form
         if 'change_day' in self.form_result:
             image.day = datetime(year=int(self.form_result.get('year')),
                                  month=int(self.form_result.get('month')),
                                  day=int(self.form_result.get('day')))
         
+        # If the state is accepted and the image wasn't accepted before,
+        # store it with the 'accept' parameter
         if request.params.getone('state') == 'accepted' and (not image.day):
             image.store(self.db, accept=True, revised_by=session['user'])
         else:
+            # If the state is pending, delete the scheduled day
             if request.params.getone('state') == 'pending':
                 image.day = None
             image.store(self.db, revised_by=session['user'])
@@ -102,6 +113,7 @@ class AdminController(BaseController):
         c.password = generate_password()
         user.password = c.password
 
+        # Sends the email
         send_email(render('/emails/registration.mako'),
                    'Welcome to troppotardi',
                    [user.email])

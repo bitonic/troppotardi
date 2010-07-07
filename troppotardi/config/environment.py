@@ -43,9 +43,7 @@ def load_environment(global_conf, app_conf):
         input_encoding='utf-8', default_filters=['escape'],
         imports=['from webhelpers.html import escape'])
 
-    # CONFIGURATION OPTIONS HERE (note: all config options will override
-    # any Pylons config options)
-
+    # Sets up the database in the config
     config['troppotardi.db'] = Database(config['couchdb_uri'])
 
     return config
