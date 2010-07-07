@@ -77,7 +77,7 @@ class Image(mapping.Document):
         super(Image, self).store(db)
 
         if image_file:
-            store_image(image_file)
+            self.store_image(image_file)
 
         return self
 
