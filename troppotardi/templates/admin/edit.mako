@@ -9,6 +9,7 @@ ${h.form(h.url(controller='admin', action='edit', id=c.image.id), method='POST')
 Text:<br/>${h.textarea("text", cols=50, rows=10, content=c.image.text)}<br/>
 Author: ${h.text("author", value=c.image.author)}<br/>
 Author website: ${h.text("author_url", value=c.image.author_url)}<br/>
+Date of the image: ${h.text("day", value=c.image.day.day)}-${h.text("month", value=c.image.day.day)}-${h.text("year", value=c.image.day.day)}
 <hr/>
 
 <%

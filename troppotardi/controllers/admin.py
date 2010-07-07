@@ -57,6 +57,7 @@ class AdminController(BaseController):
 
     @authorize('review_images')
     @restrict('POST')
+    @validate(schema=EditImage(), form='edit')
     def _doedit(self, id):
         image = Image.load(self.db, id)
         

@@ -4,7 +4,8 @@ import os
 import imghdr
 from PIL import Image as PILImage
 
-from troppotardi.model import User
+from troppotardi.model import User, Image
+from troppotardi.lib.mapping import day_to_str
 
 class ImageFormat(formencode.FancyValidator):
     """Verifies that the image submitted is an image"""
@@ -71,3 +72,13 @@ class ExistingRole(formencode.FancyValidator):
                 'The role does not exist.',
                 value, state)
         return value
+
+class UniqueDate(formencode.FancyValidator):
+    def validate_python(self, field_dict, state):
+        day = field_dict['year'] + '-' + field_dict['month'] + '-' + field_dict['day']
+
+        imgs = list(Image.by_day(startkey=day, limit=1))
+        if imgs and (day_to_str(imgs[0].day) == day):
+            raise formencode.Invalid(
+                'The day you entered already exists.',
+                field_dict, state)

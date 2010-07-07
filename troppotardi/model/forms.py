@@ -46,3 +46,8 @@ class EditUser(formencode.Schema):
     confirm_password = validators.String()
     role = ExistingRole(not_empty=True)
     chained_validators = [validators.FieldsMatch('password', 'confirm_password')]
+
+class EditImage(formencode.Schema):
+    allow_extra_fields = True
+    filter_extra_fields = False
+    chained_validators = [UniqueDate()]
