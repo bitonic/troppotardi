@@ -12,7 +12,7 @@
 	<th>Image</th>
 	<th>Author</th>
         <th>Day</th>
-	<th>Submitted on</th>
+	<!--<th>Submitted on</th>-->
 	<th>Text</th>
       </tr>
       % for image in images:
@@ -20,7 +20,7 @@
             <td>${image.admin_thumb(max_width=200)}</td>
             <td><a href="${image.author_url}">${image.author}</a></td>
             <td>${image.day.strftime("%d-%m-%Y")}</td>
-            <td>${image.submitted.ctime()}</td>
+            <!--<td>image.submitted.ctime()</td>-->
             <td>${image.text}</td>
             <td><a href="${h.url(controller='admin', action='edit', id=image.id)}">Edit</a></td>
 	  </tr>
