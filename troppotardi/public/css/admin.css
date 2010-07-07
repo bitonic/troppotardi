@@ -1,4 +1,4 @@
-#flash, #warning {
+#flash, #warning, .error-message {
     color: red;
     font-weight: bold;
 }

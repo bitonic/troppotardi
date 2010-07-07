@@ -2,6 +2,7 @@ import formencode
 import pylons
 import os
 import imghdr
+from datetime import datetime
 from PIL import Image as PILImage
 
 from pylons import tmpl_context
@@ -76,10 +77,14 @@ class ExistingRole(formencode.FancyValidator):
 
 class UniqueDate(formencode.FancyValidator):
     def validate_python(self, field_dict, state):
-        day = field_dict['year'] + '-' + field_dict['month'] + '-' + field_dict['day']
-
-        imgs = list(Image.by_day(tmpl_context.db, startkey=day, limit=1))
-        if imgs and (day_to_str(imgs[0].day) == day):
-            raise formencode.Invalid(
-                'The day you entered already exists.',
-                field_dict, state)
+        if 'change_day' in field_dict:
+            day = day_to_str(datetime(year=int(field_dict['year']),
+                                      month=int(field_dict['month']),
+                                      day=int(field_dict['day'])))
+            
+            imgs = list(Image.by_day(tmpl_context.db, startkey=day, limit=1))
+            
+            if imgs and (day_to_str(imgs[0].day) == day):
+                raise formencode.Invalid(
+                    'The day you entered already exists.',
+                    field_dict, state)

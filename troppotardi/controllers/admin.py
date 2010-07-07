@@ -1,5 +1,7 @@
 import logging
 
+from datetime import datetime
+
 from pylons import request, response, session, tmpl_context as c, url
 from pylons.controllers.util import abort, redirect
 from pylons.decorators.rest import restrict, dispatch_on
@@ -65,10 +67,16 @@ class AdminController(BaseController):
         image.author_url = request.params.getone('author_url')
         image.text = request.params.getone('text')
 
-        if request.params.getone('state') == 'accepted' and (not image.accepted):
+        if 'change_day' in self.form_result:
+            image.day = datetime(year=int(self.form_result.get('year')),
+                                 month=int(self.form_result.get('month')),
+                                 day=int(self.form_result.get('day')))
+        
+        if request.params.getone('state') == 'accepted' and (not image.day):
             image.store(self.db, accept=True, revised_by=session['user'])
         else:
-            image.accepted = None
+            if request.params.getone('state') == 'pending':
+                image.day = None
             image.store(self.db, revised_by=session['user'])
 
         flash('Image successfully edited')
