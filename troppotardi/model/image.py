@@ -8,7 +8,6 @@ import webhelpers.html.tags as tags
 from webhelpers.html.builder import make_tag
 from pylons import config, session, tmpl_context
 
-from troppotardi.lib.helpers import image_url, image_path
 from troppotardi.lib import slugify
 from troppotardi.lib.mapping import DayField
 from troppotardi.lib.image_utils import thumbnailer
@@ -28,11 +27,11 @@ class Image(mapping.Document):
 
     @property
     def path(self):
-        return image_path(self.filename)
+        return os.path.join(config['images_dir'], self.filename)
     
     @property
     def url(self):
-        return image_url(self.filename)
+        return os.path.join(config['images_base_url'], self.filename)
 
     def __init__(self, **kwargs):
         super(Image, self).__init__()
