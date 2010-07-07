@@ -27,6 +27,7 @@
 <%def name="title()">troppo tardi - </%def>
 <%def name="heading()"></%def>
 <%def name="head()">
+<link rel="shortcut icon" href="/favicon.ico" />
 <script src="/js/cufon-yui.js" type="text/javascript"></script>
 <!--<script src="/js/VeraMono_400-VeraMono_700-VeraMono_oblique_400.font.js" type="text/javascript"></script>-->
 <script src="/js/Courier_400-Courier_700-Courier_italic_400.font.js" type="text/javascript"></script>
