@@ -1,5 +1,7 @@
 <%inherit file="/images/base.mako"/>
 
+<%def name="title()">${parent.title()} About</%def>
+
 <div id="about">
 <center>vagueness<br/>
 vacuity<br/>
