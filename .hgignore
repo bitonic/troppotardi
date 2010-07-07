@@ -1,0 +1,11 @@
+syntax: glob
+*.pyc
+.emacs.desktop
+troppotardi/public/static_images/*
+troppotardi/public/thumbs/*
+data/*
+development.ini
+*~
+
+syntax: regexp
+(.*/)?\#[^/]*\#$
