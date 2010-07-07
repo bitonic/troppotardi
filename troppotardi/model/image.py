@@ -115,7 +115,7 @@ class Image(mapping.Document):
         thumbs_list = [file for file in [files for root, dirs, files in
                                          os.walk(config['thumbs_dir'])][0]]
         (name, _) = os.path.splitext(self.filename)
-        thumbs_list = filter(lambda fn: fn.startswith(name + '_'))
+        thumbs_list = filter(lambda fn: fn.startswith(name + '_'), thumbs_list)
         for file in thumbs_list:
             os.remove(os.path.join(config['thumbs_dir'], file))
 
