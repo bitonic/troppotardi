@@ -47,7 +47,7 @@ class Image(mapping.Document):
                 thumb = thumbnailer(self.path, max_width=max_width)
             if max_height and height > max_height:
                 thumb = thumbnailer(self.path, max_height=max_height)
-            return make_tag('a', href=self.url, c=tags.image(thumb))
+            return make_tag('a', href=self.url, c=tags.image(thumb, None))
 
     def store(self, db, accept=False, image_file=None, revised_by=None):
         if not self.submitted:
