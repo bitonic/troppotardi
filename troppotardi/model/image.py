@@ -99,7 +99,7 @@ class Image(mapping.Document):
                 else:
                     self.filename = '1.' + format
                     """
-                self.filename = self.id + format
+                self.filename = self.id + '.' + format
                 
                 permanent_file = open(self.path, 'w')
                 
