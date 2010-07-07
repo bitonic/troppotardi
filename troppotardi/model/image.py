@@ -135,7 +135,7 @@ class Image(mapping.Document):
     pending_by_time = mapping.ViewField('images', '''
         function(doc) {
             if (doc.type == 'Image' && !doc.day) {
-                emit(doc.id, doc);
+                emit(doc.submitted, doc);
             }
         }''')
 
