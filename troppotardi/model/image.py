@@ -71,26 +71,22 @@ class Image(mapping.Document):
                 self.day = datetime(last_day.year, last_day.month,
                                     last_day.day) + timedelta(days=1)
 
-            """
-            if not self.slug:
-                slug = self.day.strftime("%y-%m-%d") + '-' + slugify(self.author)
-                slugs = Image.by_slug(tmpl_context.db)
-                if slug in slugs:
-                    counter = 1
-                    slug += '-'
-                    while((slug + str(counter)) not in Image.by_slug(config['troppotardi.db'])):
-                        counter += 1
-                    slug += str(counter)
-                self.slug = slug"""
+        if revised_by:
+            self.revised_by = revised_by.id
 
+        super(Image, self).store(db)
+
+        if image_file:
+            store_image(image_file)
+
+        return self
+
+    def store_image(image_file):
         if image_file:
             format = imghdr.what(image_file)
             if format == 'png' or format == 'jpeg':
-                # If the format already exists, that means that we had
-                # uploaded an image before, so let's delete it
-                if hasattr(self, 'format'):
-                    os.remove(self.path)
                 
+                """
                 # The images are simply numbered from 1.
                 # I get the maximum number in the directory +1 and that's the new name.
                 
@@ -102,20 +98,16 @@ class Image(mapping.Document):
                     self.filename = str(int(self.filename) + 1) + '.' + format
                 else:
                     self.filename = '1.' + format
-
+                    """
+                self.filename = self._id + format
+                
                 permanent_file = open(self.path, 'w')
                 
                 # Copy the file
                 shutil.copyfileobj(image_file, permanent_file)
                 image_file.close()
                 permanent_file.close()
-
-        if revised_by:
-            self.revised_by = revised_by.id
-
-        super(Image, self).store(db)
-        return self
-
+        
     def delete(self, db):
         # Delete image file
         full_filename = os.path.join(config['images_dir'], self.filename)
