@@ -84,7 +84,7 @@ class UniqueDate(formencode.FancyValidator):
             
             imgs = list(Image.by_day(tmpl_context.db, startkey=day, limit=2))
             if imgs:
-                if imgs[0].id == field_dict['id'] and len(imgs) > 1 and day_to_str(imgs[i] == day:
+                if imgs[0].id == field_dict['id'] and len(imgs) > 1 and day_to_str(imgs[i]) == day:
                     raise formencode.Invalid(
                         'The day you entered already exists.',
                         field_dict, state)
