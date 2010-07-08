@@ -4,13 +4,12 @@
   "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
-  <title>troppo tardi</title>
-  ${h.stylesheet_link('/css/home.css')}
+    <title>troppo tardi</title>
+    ${h.stylesheet_link('/css/home.css')}
 </head>
 <body>
-  <a href="${h.url(controller='images', action='last')}">
-    <img src="/layout_images/logo.png" alt="troppotardi" />
-  </a>
-</div>
+    <a href="${h.url(controller='images', action='last')}">
+        <img src="/layout_images/logo.png" alt="troppotardi" />
+    </a>
 </body>
 </html>

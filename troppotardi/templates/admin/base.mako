@@ -2,7 +2,9 @@
 
 <h2>${self.heading()}</h2>
 
+<div id="container">
 ${next.body()}
+</div>
 
 <%def name="head()">${h.stylesheet_link('/css/admin.css')}</%def>
 

@@ -4,6 +4,7 @@
 
 <%def name="head()">${parent.head()}
 <style type="text/css">
+/* reCAPTCHA styling */
 .error-message {
     float:right;
     color:red;
@@ -21,31 +22,26 @@ var RecaptchaOptions = {
 </%def>
 
 <div id="submit-form">
-${h.form(h.url(controller="images", action="submit"), method="POST", multipart=True)}
-<ul>
-<li><b>bold</b> = required field<br/></li>
-<li class="mandatory">Image to submit: ${h.file("image_file")}</li>
-<li class="mandatory">Your name: ${h.text("author")}</li>
-<li>Your website: ${h.text("author_url")}</li>
-<li>Short description/title about the image:<br/>
-${h.text("text", id="textinput")}</li>
-<li class="captcha">
-  <script type="text/javascript"
-          src="http://api.recaptcha.net/challenge?k=${c.recaptcha_key}">
-  </script>
-
-  <noscript>
-    <iframe src="http://api.recaptcha.net/noscript?k=${c.recaptcha_key}"
-            height="300" width="500" frameborder="0"></iframe><br>
-    <textarea name="recaptcha_challenge_field" rows="3" cols="40">
-    </textarea>
-    <input type="hidden" name="recaptcha_response_field" 
-           value="manual_challenge">
-  </noscript>
-</li>
-<li id="submit_button">
-<input type="image" src="/layout_images/submit.png" alt="Submit" />
-<li>
-</ul>
-${h.end_form()}
+    ${h.form(h.url(controller="images", action="submit"), method="POST", multipart=True)}
+    <ul>
+        <li><b>bold</b> = required field<br/></li>
+        <li class="mandatory">Image to submit: ${h.file("image_file")}</li>
+        <li class="mandatory">Your name: ${h.text("author")}</li>
+        <li>Your website: ${h.text("author_url")}</li>
+        <li>Short description/title about the image:<br/>
+            ${h.text("text", id="textinput")}</li>
+        <li class="captcha">
+            <script type="text/javascript" src="http://api.recaptcha.net/challenge?k=${c.recaptcha_key}"></script>
+            <noscript>
+                <iframe src="http://api.recaptcha.net/noscript?k=${c.recaptcha_key}" height="300" width="500" frameborder="0"></iframe><br>
+                <textarea name="recaptcha_challenge_field" rows="3" cols="40">
+                </textarea>
+                <input type="hidden" name="recaptcha_response_field" value="manual_challenge">
+            </noscript>
+        </li>
+        <li id="submit_button">
+            <input type="image" src="/layout_images/submit.png" alt="Submit" />
+        </li>
+    </ul>
+    ${h.end_form()}
 </div>
