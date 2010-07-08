@@ -1,6 +1,6 @@
 ## -*- coding: utf-8 -*-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>${self.title()}</title>
     ${self.head()}
@@ -27,6 +27,7 @@
 <%def name="heading()"></%def>
 
 <%def name="head()">
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <link rel="shortcut icon" href="/favicon.ico" />
 <script src="/js/cufon-yui.js" type="text/javascript"></script>
 <script src="/js/Courier_400-Courier_700-Courier_italic_400.font.js" type="text/javascript"></script>

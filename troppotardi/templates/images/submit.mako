@@ -22,7 +22,7 @@ var RecaptchaOptions = {
 </%def>
 
 <div id="submit-form">
-    ${h.form(h.url(controller="images", action="submit"), method="POST", multipart=True)}
+    ${h.form(h.url(controller="images", action="submit"), method="post", multipart=True)}
     <ul>
         <li><b>bold</b> = required field<br/></li>
         <li class="mandatory">Image to submit: ${h.file("image_file")}</li>
@@ -33,10 +33,9 @@ var RecaptchaOptions = {
         <li class="captcha">
             <script type="text/javascript" src="http://api.recaptcha.net/challenge?k=${c.recaptcha_key}"></script>
             <noscript>
-                <iframe src="http://api.recaptcha.net/noscript?k=${c.recaptcha_key}" height="300" width="500" frameborder="0"></iframe><br>
-                <textarea name="recaptcha_challenge_field" rows="3" cols="40">
-                </textarea>
-                <input type="hidden" name="recaptcha_response_field" value="manual_challenge">
+                <iframe src="http://api.recaptcha.net/noscript?k=${c.recaptcha_key}" height="300" width="500" frameborder="0"></iframe><br/>
+                <textarea name="recaptcha_challenge_field" rows="3" cols="40"></textarea>
+                <input type="hidden" name="recaptcha_response_field" value="manual_challenge"/>
             </noscript>
         </li>
         <li id="submit_button">

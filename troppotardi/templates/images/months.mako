@@ -20,9 +20,10 @@
                 </li>
             % endif
         <li>
-        <a href="${h.url(controller='images', action='show', day=h.day_to_str(image.day))}">
-        ${image.day.strftime('%d')}
-        </a>
+            <a href="${h.url(controller='images', action='show', day=h.day_to_str(image.day))}">
+            ${image.day.strftime('%d')}
+            </a>
+        </li>
         % endfor
     </ul>
     </div>
