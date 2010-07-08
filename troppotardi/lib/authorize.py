@@ -3,7 +3,7 @@ from pylons.controllers.util import redirect, abort
 from decorator import decorator
 
 def authorize(permission):
-    """Given a permission, checks if the user is authorized"""
+    """Validator that given a permission, checks if the user is authorized"""
     def validator(func, *args, **kwargs):
         # If the visitor is not logged in, redirect him to the login page
         if 'user' not in session:
