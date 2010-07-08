@@ -2,10 +2,11 @@ import formencode
 import pylons
 import os
 import imghdr
+import urllib2, urllib
 from datetime import datetime
 from PIL import Image as PILImage
 
-from pylons import tmpl_context, request
+from pylons import tmpl_context, request, config
 from troppotardi.model import User, Image
 from troppotardi.lib.mapping import day_to_str
 
@@ -102,6 +103,17 @@ class UniqueDate(formencode.FancyValidator):
                             'The day you entered already exists.',
                             field_dict, state)
 
-"""
 class ReCaptcha(formencode.FancyValidator):
-   """ 
+    def validate_python(self, field_dict, state):
+        values = {
+            'privatekey': config['recaptcha_privkey'],
+            'remoteip': request.environ['REMOTE_ADDR'],
+            'challenge': field_dict['recaptcha_challenge_field'],
+            'response': field_dict['recaptcha_response_field'],
+            }
+        req = urllib2.urlopen(config['recaptcha_server'],
+                              urllib.urlencode(values))
+        if req.read().splitlines()[0] != 'true':
+            raise formencode.Invalid(
+                'Wrong captcha.',
+                field_dict, state)

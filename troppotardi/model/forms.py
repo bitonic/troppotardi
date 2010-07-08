@@ -8,7 +8,7 @@ from troppotardi.model.validators import *
 class ImageSubmit(formencode.Schema):
     # images/submit
     allow_extra_fields = True
-    filter_extra_fields = True
+    filter_extra_fields = False
     image_file = formencode.All(ImageFormat(not_empty=True),
                                 ImageSize())
     author = formencode.All(validators.String(not_empty=True),
@@ -16,6 +16,7 @@ class ImageSubmit(formencode.Schema):
     author_url = validators.URL(add_http=True)
     text = formencode.All(validators.String(),
                           validators.MaxLength(200))
+    chained_validators = [ReCaptcha()]
 
 class Login(formencode.Schema):
     # users/login
