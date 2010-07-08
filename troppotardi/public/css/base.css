@@ -123,12 +123,16 @@ img {
     padding-left: 110px;
 }
 
+#months {
+    padding-bottom: 10px;
+}
+
 #months ul {
     list-style-type: none;
 }
 
 #months li {
-    width: 147px;
+    float:left;
     text-align:center;
 }
 

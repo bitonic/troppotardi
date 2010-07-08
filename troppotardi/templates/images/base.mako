@@ -11,3 +11,8 @@ ${next.body()}
 <a href="http://bitbucket.org/rostayob/troppotardi/">Source</a> &middot;
 <a href="/">Home</a>
 </%def>
+
+<%def name="head()">
+${parent.head()}
+${h.google_analytics()}
+</%def>

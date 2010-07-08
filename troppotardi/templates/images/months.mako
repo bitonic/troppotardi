@@ -16,7 +16,7 @@
                 year = image.day.year
                 %>
                 <li class="month">
-                ${image.day.strftime('%B %Y')}
+                    ${image.day.strftime('%B %Y')}: 
                 </li>
             % endif
         <li>
