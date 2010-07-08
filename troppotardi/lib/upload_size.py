@@ -2,6 +2,8 @@ from webob import Request
 from webob.exc import HTTPBadRequest
 
 class LimitUploadSize(object):
+    """Class to include in the middleware that limits the
+    upload size."""
 
     def __init__(self, app, size):
         self.app = app

@@ -21,6 +21,7 @@ class DayField(Field):
         return value.strftime('%Y-%m-%d')
 
 def day_to_str(daydate):
-    daydate = datetime(daydate.year, daydate.month, daydate.day)
+    """Helper function that transform the datetime object
+    in the string"""
     daydate = daydate.strftime("%Y-%m-%d")
     return daydate

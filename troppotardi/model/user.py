@@ -37,9 +37,19 @@ class User(mapping.Document):
         super(User, self).store(db)
         return self
     
-    by_time = mapping.ViewField('users', '''function(doc) {if (doc.type == 'User') {emit(doc.created, doc)}}''')
+    by_time = mapping.ViewField('users', '''
+        function(doc) {
+            if (doc.type == 'User') {
+                emit(doc.created, doc);
+            }
+        }''')
     
-    by_username = mapping.ViewField('users', '''function(doc) {if (doc.type == 'User') {emit(doc.username, doc);}}''')
+    by_username = mapping.ViewField('users', '''
+        function(doc) {
+            if (doc.type == 'User') {
+                emit(doc.username, doc);
+            }
+        }''')
 
     # The roles should be in order of "powerfulness"
     roles = ['Admin', 'Reviewer']

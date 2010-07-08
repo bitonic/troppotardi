@@ -8,7 +8,7 @@ from pylons.decorators.rest import restrict, dispatch_on
 
 from troppotardi.lib.base import BaseController, render
 from troppotardi.model import User
-from troppotardi.model.forms import LoginForm, CpForm
+from troppotardi.model.forms import Login, CpForm
 from troppotardi.lib.helpers import flash
 from troppotardi.lib import authorize
 
@@ -45,7 +45,7 @@ class UsersController(BaseController):
         redirect(url(controller='users', action='cp'))
 
     @restrict('POST')
-    @validate(schema=LoginForm(), form='login')
+    @validate(schema=Login(), form='login')
     def _dologin(self):
         session['user'] = list(User.by_username(self.db)[self.form_result['username']])[0]
         flash('Login successful')

@@ -6,7 +6,7 @@ import imghdr
 from PIL import Image as PILImage
 import webhelpers.html.tags as tags
 from webhelpers.html.builder import make_tag
-from pylons import config, session, tmpl_context
+from pylons import config, session, tmpl_context, request
 
 from troppotardi.lib.mapping import DayField
 from troppotardi.lib.image_utils import thumbnailer
@@ -17,6 +17,7 @@ class Image(mapping.Document):
     text = mapping.TextField()
     author = mapping.TextField()
     author_url = mapping.TextField()
+    author_ip = mapping.TextField()
 
     submitted = mapping.DateTimeField()
     day = DayField()
@@ -26,15 +27,18 @@ class Image(mapping.Document):
 
     @property
     def path(self):
+        """Returns the full path to the image"""
         return os.path.join(config['images_dir'], self.filename)
     
     @property
     def url(self):
+        """Returns the (relative, without the domain) url"""
         return os.path.join(config['images_base_url'], self.filename)
 
     def __init__(self, **kwargs):
         super(Image, self).__init__()
         
+        # Assign every kwarg to self
         for k in kwargs:
             setattr(self, k, kwargs[k])
             
@@ -43,60 +47,65 @@ class Image(mapping.Document):
         if self.filename:
             image = PILImage.open(self.path)
             (width, height) = image.size
+            
             if max_width and width > max_width:
                 thumb = thumbnailer(self.filename, max_width=max_width)
             if max_height and height > max_height:
                 thumb = thumbnailer(self.filename, max_height=max_height)
             return make_tag('a', href=self.url, c=tags.image(thumb, None))
 
-    def store(self, db, accept=False, image_file=None, revised_by=None):
+    def store(self, db, accept=False, image_file=None):
+        # Record the date of submission and the ip of the submitter
         if not self.submitted:
             self.submitted = datetime.utcnow()
+            self.author_ip = request.environ['REMOTE_ADDR']
 
+        # If the accept argument is passed, we schedule it for the
+        # next available day
         if accept:
             today = datetime.utcnow()
             today = datetime(today.year, today.month, today.day)
             
+            # Get the image with the futuremost day
             days = list(Image.by_day(tmpl_context.db, descending=True, limit=1))
-            if days and (days[0].day < today):
+            
+            # If that day is before then today, or if there are no images at
+            # all, schedule it for today
+            if (days and (days[0].day < today)) or (not days):
                 self.day = today
-            elif not days:
-                self.day = today
+            # Else, schedule it for the day after that day
             else:
                 last_day = days[0].day
                 self.day = datetime(last_day.year, last_day.month,
                                     last_day.day) + timedelta(days=1)
 
-        if revised_by:
-            self.revised_by = revised_by.id
+        # If there is a user in the session, store it in the revision
+        if 'user' in session:
+            self.revised_by = session['user'].id
 
+        # Store it in the database.
         super(Image, self).store(db)
 
+        # Save the image file. We do it afterwards storing the image
+        # because we use the id as a filename, and we need to store the image
+        # first to get an id.
         if image_file:
+            # Get the image format...
             format = imghdr.what(image_file)
+            # Only png and jpeg files. There is already a check with the validator
+            # but you never know (:
             if format == 'png' or format == 'jpeg':
-                
-                """
-                # The images are simply numbered from 1.
-                # I get the maximum number in the directory +1 and that's the new name.
-                
-                file_list = [int(os.path.splitext(file)[0])
-                             for file in [files for root, dirs, files in
-                                          os.walk(config['images_dir'])][0]]
-                if file_list:
-                    self.filename = max(file_list)
-                    self.filename = str(int(self.filename) + 1) + '.' + format
-                else:
-                    self.filename = '1.' + format
-                    """
+
                 self.filename = self.id + '.' + format
+                # Store again with the filename
                 super(Image, self).store(db)
                 
+                # Open the new file
                 permanent_file = open(self.path, 'w')
                 
-                # Copy the file
+                # Copy the temp file to its destination
                 shutil.copyfileobj(image_file, permanent_file)
-                image_file.close()
+                image_file.close() # close everything
                 permanent_file.close()
 
 

@@ -6,7 +6,7 @@ from troppotardi.model import User
 from troppotardi.model.validators import *
 
 class ImageSubmit(formencode.Schema):
-    """Schema to validate the form to submit images"""
+    # images/submit
     allow_extra_fields = True
     filter_extra_fields = True
     image_file = formencode.All(ImageFormat(not_empty=True),
@@ -17,7 +17,26 @@ class ImageSubmit(formencode.Schema):
     text = formencode.All(validators.String(),
                           validators.MaxLength(200))
 
+class Login(formencode.Schema):
+    # users/login
+    allow_extra_fields = True
+    filter_extra_fields = False
+    username = validators.String(not_empty=True)
+    password = validators.String(not_empty=True)
+    chained_validators = [VerifyUser()]
+
+
+
+class CpForm(formencode.Schema):
+    # users/cp
+    allow_extra_fields = True
+    filter_extra_fields = False
+    chained_validators = [VerifyUser(), validators.FieldsMatch('newpassword', 'confirmpassword')]
+
+
+
 class AddUser(formencode.Schema):
+    # admin/adduser
     allow_extra_fields = True
     filter_extra_fields = False
     username = formencode.All(validators.String(not_empty=True),
@@ -25,19 +44,9 @@ class AddUser(formencode.Schema):
     email = validators.Email(not_empty=True)
     role = ExistingRole(not_empty=True)
 
-class LoginForm(formencode.Schema):
-    allow_extra_fields = True
-    filter_extra_fields = False
-    username = validators.String(not_empty=True)
-    password = validators.String(not_empty=True)
-    chained_validators = [VerifyUser()]
-
-class CpForm(formencode.Schema):
-    allow_extra_fields = True
-    filter_extra_fields = False
-    chained_validators = [VerifyUser(), validators.FieldsMatch('newpassword', 'confirmpassword')]
     
 class EditUser(formencode.Schema):
+    # admin/edit_user
     allow_extra_fields = True
     username = formencode.All(validators.String(not_empy=True),
                               UniqueUsername())
@@ -48,6 +57,7 @@ class EditUser(formencode.Schema):
     chained_validators = [validators.FieldsMatch('password', 'confirm_password')]
 
 class EditImage(formencode.Schema):
+    # admin/edit/id
     allow_extra_fields = True
     filter_extra_fields = False
     chained_validators = [UniqueDate()]

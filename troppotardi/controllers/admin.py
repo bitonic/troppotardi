@@ -37,7 +37,7 @@ class AdminController(BaseController):
         # Accept all of them
         for id in to_accept:
             image = Image.load(self.db, id)
-            image.store(self.db, accept=True, revised_by=session['user'])
+            image.store(self.db, accept=True)
         
         # These are the ones to delete
         to_delete = request.POST.getall('delete')
@@ -83,12 +83,12 @@ class AdminController(BaseController):
         # If the state is accepted and the image wasn't accepted before,
         # store it with the 'accept' parameter
         if request.params.getone('state') == 'accepted' and (not image.day):
-            image.store(self.db, accept=True, revised_by=session['user'])
+            image.store(self.db, accept=True)
         else:
             # If the state is pending, delete the scheduled day
             if request.params.getone('state') == 'pending':
                 image.day = None
-            image.store(self.db, revised_by=session['user'])
+            image.store(self.db)
 
         flash('Image successfully edited')
         redirect(url(controller='admin', action='edit', id=id))
@@ -118,7 +118,7 @@ class AdminController(BaseController):
                    'Welcome to troppotardi',
                    [user.email])
         
-        user.store(self.db, revised_by=session['user'])
+        user.store(self.db)
         
         flash('User added successfully, an email has been sent with the password.')
         redirect(url(controller='admin', action='adduser'))
@@ -149,7 +149,7 @@ class AdminController(BaseController):
         if self.form_result.get('password'):
             user.password = self.form_result.get('password')
 
-        user.store(self.db, revised_by=session['user'])
+        user.store(self.db)
         
         flash('User successfully edited.')
         redirect(url(controller='admin', action='edit_user', id=id))

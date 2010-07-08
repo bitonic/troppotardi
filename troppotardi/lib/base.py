@@ -25,7 +25,9 @@ class BaseController(WSGIController):
         return WSGIController.__call__(self, environ, start_response)
 
     def __before__(self):
-        # Updates the user
+        # I update the user every time so that if the user is changed 
+        # it gets updated. Maybe I should add the reloading in every
+        # part of the code that updates the user...
         if 'user' in pylons.session:
             if not pylons.session['user']:
                 del pylons.session['user']
