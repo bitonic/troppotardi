@@ -4,6 +4,7 @@ syntax: glob
 troppotardi/public/static_images/*
 troppotardi/public/thumbs/*
 data/
+prod.ini
 development.ini
 *~
 
