@@ -8,10 +8,10 @@ except ImportError:
 setup(
     name='troppotardi',
     version='0.1',
-    description='',
-    author='',
-    author_email='',
-    url='',
+    description='the engine that runs troppotardi.com',
+    author='Francesco Mazzoli',
+    author_email='e.imhotep@gmail.com',
+    url='troppotardi.com',
     install_requires=[
         "Pylons==1.0",
         "Couchdb==0.7",
