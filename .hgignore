@@ -3,7 +3,7 @@ syntax: glob
 .emacs.desktop
 troppotardi/public/static_images/*
 troppotardi/public/thumbs/*
-data/*
+data/
 development.ini
 *~
 
