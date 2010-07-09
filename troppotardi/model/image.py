@@ -179,6 +179,8 @@ class Image(mapping.Document):
                    text: doc.text,
                    filename: doc.filename,
                    day: doc.day,
+                   author_email: doc.author_email,
+                   submitted: doc.submitted,
                });
            }
         }''')
