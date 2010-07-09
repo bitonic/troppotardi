@@ -16,16 +16,17 @@ class ErrorController(BaseController):
     ErrorDocuments middleware in your config/middleware.py file.
 
     """
+
     def document(self):
-        """Render the error document"""
         request = self._py_object.request
         resp = request.environ.get('pylons.original_response')
         content = literal(resp.body) or cgi.escape(request.GET.get('message', ''))
-        page = error_document_template % \
-            dict(prefix=request.environ.get('SCRIPT_NAME', ''),
-                 code=cgi.escape(request.GET.get('code', str(resp.status_int))),
-                 message=content)
-        return page
+        template = '<html><head><title>Error %(code)s</title></head><body><h1>Error %(code)s</h1><p>%(message)s</p></body></html>'
+        template = template % dict(
+            code=cgi.escape(request.GET.get('code', str(resp.status_int))), 
+            message=content
+            )
+        return template
 
     def img(self, id):
         """Serve Pylons' stock images"""
