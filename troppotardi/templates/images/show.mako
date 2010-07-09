@@ -33,6 +33,6 @@
 
 <div id="img_div">
     <a href="${c.image.url}">
-        <img src="${h.thumbnailer(c.image.filename, max_width=590)}" alt="${c.image.day}" id="image" />
+        <img src="${h.thumbnailer(c.image.filename, max_width=690, max_height=690)}" alt="${c.image.day}" id="image" />
     </a>
 </div>

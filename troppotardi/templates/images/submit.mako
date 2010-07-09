@@ -30,6 +30,9 @@ var RecaptchaOptions = {
         <li>Your website: ${h.text("author_url")}</li>
         <li>Short description/title about the image:<br/>
             ${h.text("text", id="textinput")}</li>
+	<li class="mandatory">
+	    By hitting "submit", you certify that you have the rights
+	    to publish the image you are uploading.</li>
         <li class="captcha">
             <script type="text/javascript" src="http://api.recaptcha.net/challenge?k=${c.recaptcha_key}"></script>
             <noscript>
