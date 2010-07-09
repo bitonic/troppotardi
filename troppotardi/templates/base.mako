@@ -30,7 +30,8 @@
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <link rel="shortcut icon" href="/favicon.ico" />
 <script src="/js/cufon-yui.js" type="text/javascript"></script>
-<script src="/js/Courier_400-Courier_700-Courier_italic_400.font.js" type="text/javascript"></script>
+<script src="/js/Consolas_400-Consolas_700-Consolas_italic_400.font.js" type="text/javascript"></script>
+<!--<script src="/js/Courier_400-Courier_700-Courier_italic_400.font.js" type="text/javascript"></script>-->
 <script type="text/javascript">
 Cufon.replace('#about');
 Cufon.replace('#text');

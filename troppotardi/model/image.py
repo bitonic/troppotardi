@@ -95,7 +95,8 @@ class Image(mapping.Document):
             self.state = 'accepted'
 
         # Send the email only if the image is accepted
-        if self.state == 'accepted':
+        # and if we have an email, of course
+        if self.state == 'accepted' and self.author_email:
             # If we are accepting an image, old_image is not provided or
             # the old day is different than what it was before, send the
             # "first timer" message
