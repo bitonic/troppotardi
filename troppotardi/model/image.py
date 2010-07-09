@@ -94,29 +94,6 @@ class Image(mapping.Document):
 
             self.state = 'accepted'
 
-
-        # Send the email only if the image is accepted
-        # and if we have an email, of course
-        if self.state == 'accepted' and self.author_email:
-            # If we are accepting an image, old_image is not provided or
-            # the old day is different than what it was before, send the
-            # "first timer" message
-            if accept and ((not old_image) or (old_image.day != self.day)):
-                # Sends the email
-                tmpl_context.day = self.day
-                send_email(render('/emails/accepted.mako'),
-                           'troppotardi.com',
-                           [self.author_email])
-            # Else, if there is an old image and the old image was scheduled
-            # for a different day, send the "re-scheduled" message.
-            elif old_image and (old_image.day != self.day):
-                # Sends the reschedule email
-                if self.author_email and self.accepted:
-                    tmpl_context.day = self.day
-                    send_email(render('/emails/accepted_again.mako'),
-                               'troppotardi.com',
-                               [self.author_email])
-
         # If there is a user in the session, store it in the revision
         if 'user' in session:
             self.revised_by = session['user'].id
@@ -146,6 +123,31 @@ class Image(mapping.Document):
                 image_file.close() # close everything
                 permanent_file.close()
 
+        # Send the email only if the image is accepted
+        # and if we have an email, of course
+        if self.state == 'accepted' and self.author_email:
+            # If we are accepting an image, old_image is not provided or
+            # the old day is different than what it was before, send the
+            # "first timer" message
+            if accept and ((not old_image) or (old_image.day != self.day)):
+                # Sends the email
+                tmpl_context.day = self.day
+                tmpl_context.author = self.author
+                tmpl_context.image_url = config['base_url'] + self.url
+                send_email(render('/emails/accepted.mako'),
+                           'troppotardi.com',
+                           [self.author_email])
+            # Else, if there is an old image and the old image was scheduled
+            # for a different day, send the "re-scheduled" message.
+            elif old_image and (old_image.day != self.day):
+                # Sends the reschedule email
+                if self.author_email and self.accepted:
+                    tmpl_context.day = self.day
+                    tmpl_context.author = self.author
+                    tmpl_context.image_url = config['base_url'] + self.url
+                    send_email(render('/emails/accepted_again.mako'),
+                               'troppotardi.com',
+                               [self.author_email])
 
         return self
         
