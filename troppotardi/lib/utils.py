@@ -16,6 +16,7 @@ def hash_password(plain_text):
     return sha1(plain_text).hexdigest()
     
 def send_email(text, subject, recipients, sender=None):
+    
     if not sender:
         sender = config['smtp_email']
 

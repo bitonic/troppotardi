@@ -94,6 +94,7 @@ class Image(mapping.Document):
 
             self.state = 'accepted'
 
+
         # Send the email only if the image is accepted
         # and if we have an email, of course
         if self.state == 'accepted' and self.author_email:

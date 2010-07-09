@@ -17,7 +17,7 @@ class ImageSubmit(formencode.Schema):
     text = formencode.All(validators.String(),
                           validators.MaxLength(200))
     email = validators.Email()
-    chained_validators = [ReCaptcha()]
+    pre_validators = [ReCaptcha()]
 
 class Login(formencode.Schema):
     # users/login

@@ -1,6 +1,7 @@
 import couchdb.mapping as mapping
 from datetime import datetime
 from troppotardi.lib.utils import hash_password
+from pylons import session
 
 class User(mapping.Document):
     type = mapping.TextField(default='User')
@@ -35,6 +36,14 @@ class User(mapping.Document):
             self.revised_by = revised_by.id
 
         super(User, self).store(db)
+
+        # Updates the user object in the session
+        if 'user' in pylons.session:
+            if not pylons.session['user']:
+                del pylons.session['user']
+            else:
+                pylons.session['user'] = User.load(self.db, pylons.session['user'].id)
+
         return self
     
     by_time = mapping.ViewField('users', '''

@@ -3,7 +3,7 @@ import logging
 from datetime import datetime
 from copy import deepcopy
 
-from pylons import request, response, session, tmpl_context as c, url
+from pylons import request, response, tmpl_context as c, url
 from pylons.controllers.util import abort, redirect
 from pylons.decorators.rest import restrict, dispatch_on
 from pylons.decorators import validate
@@ -50,12 +50,24 @@ class AdminController(BaseController):
         redirect(url(controller='admin', action='pending'))
 
     @authorize('review_images')
+    @dispatch_on(POST='_dopending')
     def accepted(self):
         # All the accepted images (the one with a scheduled day)
         c.images = Image.by_day(self.db, descending=True)
         
         c.pending = True
         return render('/admin/accepted.mako')
+
+    @authorize('review_images')
+    @restrict('POST')
+    def _doaccepted(self):
+        to_delete = request.POST.getall('delete')
+        
+        # Delete them
+        for id in to_delete:
+            Image.load(self.db, id).delete(self.db)
+            
+        redirect(url(controller='admin', action='accepted'))
 
     @authorize('review_images')
     @dispatch_on(POST='_doedit')

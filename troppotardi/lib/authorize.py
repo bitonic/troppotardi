@@ -8,8 +8,10 @@ def authorize(permission):
         # If the visitor is not logged in, redirect him to the login page
         if 'user' not in session:
             session['redirect_to'] = request.environ.get('PATH_INFO')
+
             if request.environ.get('QUERY_STRING'):
                 session['redirect_to'] += '?' + request.environ['QUERY_STRING']
+            session.save()
 
             redirect(url(controller='users', action='login'))
 

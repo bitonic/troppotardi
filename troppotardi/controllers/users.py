@@ -41,6 +41,7 @@ class UsersController(BaseController):
     def _docp(self):
         session['user'].password = self.form_result.get('newpassword')
         session['user'].store(self.db)
+        session.save()
         flash('Changes were successful')
         redirect(url(controller='users', action='cp'))
 
@@ -48,7 +49,9 @@ class UsersController(BaseController):
     @validate(schema=Login(), form='login')
     def _dologin(self):
         session['user'] = list(User.by_username(self.db)[self.form_result['username']])[0]
+        session.save()
         flash('Login successful')
+
         if 'redirect_to' in session:
             redirect(session['redirect_to'])
         else:

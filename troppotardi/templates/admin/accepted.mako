@@ -6,7 +6,7 @@
 
 % if c.images:
     <% images = list(c.images) %>
-    ${h.form(h.url(controller='admin', action='edit_list'), method='POST')}
+    ${h.form(h.url(controller='admin', action='accepted'), method='POST')}
     <table border=1>
         <tr>
             <th>Image</th>
@@ -15,6 +15,8 @@
             <th>Day</th>
             <th>Submitted on</th>
             <th>Text</th>
+	    <th>Edit</th>
+	    <th>Delete</th>
         </tr>
         % for image in images:
         <tr>
@@ -25,9 +27,12 @@
             <td>${image.submitted.ctime()}</td>
             <td>${image.text}</td>
             <td><a href="${h.url(controller='admin', action='edit', id=image.id)}">Edit</a></td>
+            <td>${h.checkbox('delete', value=image.id, checked=False)}</td>
         </tr>
         % endfor
+</table>
+	${h.submit('submit', 'Delete')}
+	${h.end_form()}
 % else:
     No images to display.
 % endif
-</table>

@@ -23,15 +23,3 @@ class BaseController(WSGIController):
         # the request is routed to. This routing information is
         # available in environ['pylons.routes_dict']
         return WSGIController.__call__(self, environ, start_response)
-
-    def __before__(self):
-        # I update the user every time so that if the user is changed 
-        # it gets updated. Maybe I should add the reloading in every
-        # part of the code that updates the user...
-        """
-        if 'user' in pylons.session:
-            if not pylons.session['user']:
-                del pylons.session['user']
-            else:
-                pylons.session['user'] = User.load(self.db, pylons.session['user'].id)"""
-        pass
