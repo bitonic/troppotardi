@@ -20,7 +20,12 @@
     % for image in images:
         <tr>
             <td>${image.admin_thumb(max_width=200)}</td>
-            <td><a href="${image.author_url}">${image.author}</a>
+            <td>
+	        % if image.author_url:
+	            <a href="${image.author_url}">${image.author}</a></td>
+	        % else:
+	            ${image.author}
+	        % endif
             <td>${image.submitted.ctime()}</td>
             <td>${image.text}</td>
             <td>${h.checkbox('delete', value=image.id, checked=False)}</td>
