@@ -9,7 +9,7 @@ import pylons
 from couchdb import Database
 import cgi
 
-from troppotardi.model import User
+#from troppotardi.model import Image, User
 
 class BaseController(WSGIController):
 
@@ -28,8 +28,10 @@ class BaseController(WSGIController):
         # I update the user every time so that if the user is changed 
         # it gets updated. Maybe I should add the reloading in every
         # part of the code that updates the user...
+        """
         if 'user' in pylons.session:
             if not pylons.session['user']:
                 del pylons.session['user']
             else:
-                pylons.session['user'] = User.load(self.db, pylons.session['user'].id)
+                pylons.session['user'] = User.load(self.db, pylons.session['user'].id)"""
+        pass

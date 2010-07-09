@@ -30,6 +30,7 @@ var RecaptchaOptions = {
         <li>Your website: ${h.text("author_url")}</li>
         <li>Short description/title about the image:<br/>
             ${h.text("text", id="textinput")}</li>
+	<li>Email: ${h.text("email")}<br/>If you want to be notified that your email has been accepted</li>
 	<li class="mandatory">
 	    By hitting "submit", you certify that you have the rights
 	    to publish the image you are uploading.</li>

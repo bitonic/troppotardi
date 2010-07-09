@@ -83,12 +83,16 @@ img {
     width:200px;
 }
 
-#author, #author_url, #textinput {
+#author, #author_url, #textinput, #email {
     margin-left:5px;
     border:none;
     background-color:#f0f0f0;
     height:20px;
     padding:0 5px 5px 6px;
+}
+
+#email {
+    width:200px;
 }
 
 .mandatory {
@@ -120,7 +124,7 @@ img {
 }
 
 .captcha {
-    padding-left: 110px;
+    padding-left: 155px;
 }
 
 #months {

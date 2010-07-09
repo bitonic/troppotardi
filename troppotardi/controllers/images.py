@@ -70,6 +70,7 @@ class ImagesController(BaseController):
         
         image.author = self.form_result.get('author')
         image.author_url = self.form_result.get('author_url')
+        image.author_email = self.form_result.get('email')
         image.text = self.form_result.get('text')
 
         image_file = self.form_result.get('image_file').file

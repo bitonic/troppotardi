@@ -13,7 +13,7 @@ ${next.body()}
 <%def name="footer()">
 Logged in as ${session['user'].username}.
 <a href="${h.url(controller='users', action='logout')}">Logout</a> |
-<a href="${h.url(conteoller='users', action='cp')}">User CP</a>
+<a href="${h.url(controller='users', action='cp')}">User CP</a>
 ${parent.footer()} <br/>
 <a href="${url(controller='admin', action='pending')}">Review pending images</a> | 
 <a href="${url(controller='admin', action='accepted')}">Review accepted images</a>

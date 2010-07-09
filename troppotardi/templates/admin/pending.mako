@@ -12,6 +12,7 @@
         <tr>
             <th>Image</th>
             <th>Author</th>
+	    <th>Author Email</th>
             <th>Submitted on</th>
             <th>Text</th>
             <th>Delete</th>
@@ -26,6 +27,8 @@
 	        % else:
 	            ${image.author}
 	        % endif
+	    </td>
+	    <td>${image.author_email}</td>
             <td>${image.submitted.ctime()}</td>
             <td>${image.text}</td>
             <td>${h.checkbox('delete', value=image.id, checked=False)}</td>

@@ -1,6 +1,7 @@
 import logging
 
 from datetime import datetime
+from copy import deepcopy
 
 from pylons import request, response, session, tmpl_context as c, url
 from pylons.controllers.util import abort, redirect
@@ -37,7 +38,7 @@ class AdminController(BaseController):
         # Accept all of them
         for id in to_accept:
             image = Image.load(self.db, id)
-            image.store(self.db, accept=True)
+            image.store(self.db, accept=True, old_image=deepcopy(image))
         
         # These are the ones to delete
         to_delete = request.POST.getall('delete')
@@ -68,27 +69,29 @@ class AdminController(BaseController):
     @validate(schema=EditImage(), form='edit')
     def _doedit(self, id):
         image = Image.load(self.db, id)
+        old_image = deepcopy(image)
         
         image.author = request.params.getone('author')
         image.author_url = request.params.getone('author_url')
         image.text = request.params.getone('text')
 
         # "change_day" is a hidden field that indicates that the date
-        # is exposed in the form
-        if 'change_day' in self.form_result:
+        # is exposed in the form. we don't change the day if we are
+        # setting the image to pending, since this creates problems
+        # when detecting if the image has changed date
+        if 'change_day' in self.form_result and request.params.getone('state') == 'accepted':
             image.day = datetime(year=int(self.form_result.get('year')),
                                  month=int(self.form_result.get('month')),
                                  day=int(self.form_result.get('day')))
         
-        # If the state is accepted and the image wasn't accepted before,
-        # store it with the 'accept' parameter
-        if request.params.getone('state') == 'accepted' and (not image.day):
-            image.store(self.db, accept=True)
+        # If the image was pending and now is accepted, accept it
+        if image.pending and (request.params.getone('state') == 'accepted'):
+            image.store(self.db, accept=True, old_image=old_image)
         else:
-            # If the state is pending, delete the scheduled day
+            # Set the state to pending if necessary
             if request.params.getone('state') == 'pending':
-                image.day = None
-            image.store(self.db)
+                image.state = 'pending'
+            image.store(self.db, old_image=old_image)
 
         flash('Image successfully edited')
         redirect(url(controller='admin', action='edit', id=id))

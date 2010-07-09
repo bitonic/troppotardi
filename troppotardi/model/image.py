@@ -8,8 +8,10 @@ import webhelpers.html.tags as tags
 from webhelpers.html.builder import make_tag
 from pylons import config, session, tmpl_context, request
 
+from troppotardi.lib.base import render
 from troppotardi.lib.mapping import DayField
 from troppotardi.lib.image_utils import thumbnailer
+from troppotardi.lib.utils import send_email
 
 class Image(mapping.Document):
     type = mapping.TextField(default='Image')
@@ -18,10 +20,12 @@ class Image(mapping.Document):
     author = mapping.TextField()
     author_url = mapping.TextField()
     author_ip = mapping.TextField()
+    author_email = mapping.TextField()
 
     submitted = mapping.DateTimeField()
     day = DayField()
     revised_by = mapping.TextField()
+    state = mapping.TextField(default='pending')
 
     filename = mapping.TextField()
 
@@ -34,6 +38,14 @@ class Image(mapping.Document):
     def url(self):
         """Returns the (relative, without the domain) url"""
         return os.path.join(config['images_base_url'], self.filename)
+    
+    @property
+    def pending(self):
+        return self.state == 'pending'
+
+    @property
+    def accepted(self):
+        return self.state == 'accepted'
 
     def __init__(self, **kwargs):
         super(Image, self).__init__()
@@ -54,7 +66,7 @@ class Image(mapping.Document):
                 thumb = thumbnailer(self.filename, max_height=max_height)
             return make_tag('a', href=self.url, c=tags.image(thumb, None))
 
-    def store(self, db, accept=False, image_file=None):
+    def store(self, db, accept=False, image_file=None, old_image=None):
         # Record the date of submission and the ip of the submitter
         if not self.submitted:
             self.submitted = datetime.utcnow()
@@ -63,6 +75,7 @@ class Image(mapping.Document):
         # If the accept argument is passed, we schedule it for the
         # next available day
         if accept:
+
             today = datetime.utcnow()
             today = datetime(today.year, today.month, today.day)
             
@@ -78,6 +91,29 @@ class Image(mapping.Document):
                 last_day = days[0].day
                 self.day = datetime(last_day.year, last_day.month,
                                     last_day.day) + timedelta(days=1)
+
+            self.state = 'accepted'
+
+        # Send the email only if the image is accepted
+        if self.state == 'accepted':
+            # If we are accepting an image, old_image is not provided or
+            # the old day is different than what it was before, send the
+            # "first timer" message
+            if accept and ((not old_image) or (old_image.day != self.day)):
+                # Sends the email
+                tmpl_context.day = self.day
+                send_email(render('/emails/accepted.mako'),
+                           'troppotardi.com',
+                           [self.author_email])
+            # Else, if there is an old image and the old image was scheduled
+            # for a different day, send the "re-scheduled" message.
+            elif old_image and (old_image.day != self.day):
+                # Sends the reschedule email
+                if self.author_email and self.accepted:
+                    tmpl_context.day = self.day
+                    send_email(render('/emails/accepted_again.mako'),
+                               'troppotardi.com',
+                               [self.author_email])
 
         # If there is a user in the session, store it in the revision
         if 'user' in session:
@@ -129,14 +165,14 @@ class Image(mapping.Document):
 
     pending_by_time = mapping.ViewField('images', '''
         function(doc) {
-            if (doc.type == 'Image' && !doc.day) {
+            if (doc.type == 'Image' && doc.state == 'pending') {
                 emit(doc.submitted, doc);
             }
         }''')
 
     by_day = mapping.ViewField('images', '''
         function(doc) {
-           if (doc.type == 'Image' && doc.day) {
+           if (doc.type == 'Image' && doc.state == 'accepted') {
                emit(doc.day, {
                    author: doc.author,
                    author_url: doc.author_url,
@@ -149,7 +185,7 @@ class Image(mapping.Document):
 
     by_month = mapping.ViewField('images', '''
         function(doc) {
-            if (doc.type == 'Image' && doc.day) {
+            if (doc.type == 'Image' && doc.state == 'accepted') {
                 var year = parseInt(doc.submitted.substr(0, 4), 10);
                 var month = parseInt(doc.submitted.substr(5, 2), 10);
                 emit([year, month, doc.day], {
