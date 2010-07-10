@@ -26,7 +26,6 @@ class AdminController(BaseController):
         # Gets every pending image
         c.images = Image.pending_by_time(self.db, descending=True)
 
-        c.pending = True
         return render('/admin/pending.mako')
 
     @authorize('review_images')
@@ -38,7 +37,8 @@ class AdminController(BaseController):
         # Accept all of them
         for id in to_accept:
             image = Image.load(self.db, id)
-            image.store(self.db, accept=True, old_image=deepcopy(image))
+            image.state = 'accepted'
+            image.store(self.db, old_image=deepcopy(image))
         
         # These are the ones to delete
         to_delete = request.POST.getall('delete')
@@ -55,7 +55,6 @@ class AdminController(BaseController):
         # All the accepted images (the one with a scheduled day)
         c.images = Image.by_day(self.db, descending=True)
         
-        c.pending = True
         return render('/admin/accepted.mako')
 
     @authorize('review_images')
@@ -68,6 +67,23 @@ class AdminController(BaseController):
             Image.load(self.db, id).delete(self.db)
             
         redirect(url(controller='admin', action='accepted'))
+
+    @authorize('review_images')
+    @dispatch_on(POST='_dodeleted')
+    def deleted(self):
+        c.images = Image.deleted_by_time(self.db, descending=True)
+
+        return render('/admin/deleted.mako')
+
+    @authorize('delete_images')
+    @restrict('POST')
+    def _dodeleted(self):
+        to_delete = request.POST.getall('delete')
+
+        for id in to_delete:
+            Image.load(self.db, id).delete_permanently(self.db)
+
+        redirect(url(controller='admin', action='deleted'))
 
     @authorize('review_images')
     @dispatch_on(POST='_doedit')
@@ -96,14 +112,9 @@ class AdminController(BaseController):
                                  month=int(self.form_result.get('month')),
                                  day=int(self.form_result.get('day')))
         
-        # If the image was pending and now is accepted, accept it
-        if image.pending and (request.params.getone('state') == 'accepted'):
-            image.store(self.db, accept=True, old_image=old_image)
-        else:
-            # Set the state to pending if necessary
-            if request.params.getone('state') == 'pending':
-                image.state = 'pending'
-            image.store(self.db, old_image=old_image)
+        image.state = self.form_result.get('state')
+
+        image.store(self.db, old_image=old_image)
 
         flash('Image successfully edited')
         redirect(url(controller='admin', action='edit', id=id))

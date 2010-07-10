@@ -15,7 +15,7 @@ Author website: ${h.text("author_url", value=c.image.author_url)}<br/>
 % endif
 <hr/>
 
-State of the image: ${h.select("state", c.image.state, [['pending', 'Pending'], ['accepted', 'Accepted']])}
+State of the image: ${h.select("state", c.image.state, [[state, state.capitalize()] for state in c.image.states])}
 <br/>
 
 ${h.submit("submit", "Submit")}

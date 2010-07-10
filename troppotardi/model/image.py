@@ -66,7 +66,7 @@ class Image(mapping.Document):
                 thumb = thumbnailer(self.filename, max_height=max_height)
             return make_tag('a', href=self.url, c=tags.image(thumb, None))
 
-    def store(self, db, accept=False, image_file=None, old_image=None):
+    def store(self, db, image_file=None, old_image=None):
         # Record the date of submission and the ip of the submitter
         if not self.submitted:
             self.submitted = datetime.utcnow()
@@ -74,7 +74,7 @@ class Image(mapping.Document):
 
         # If the accept argument is passed, we schedule it for the
         # next available day
-        if accept:
+        if self.accepted and (not self.day):
 
             today = datetime.utcnow()
             today = datetime(today.year, today.month, today.day)
@@ -91,8 +91,6 @@ class Image(mapping.Document):
                 last_day = days[0].day
                 self.day = datetime(last_day.year, last_day.month,
                                     last_day.day) + timedelta(days=1)
-
-            self.state = 'accepted'
 
         # If there is a user in the session, store it in the revision
         if 'user' in session:
@@ -125,7 +123,7 @@ class Image(mapping.Document):
 
         # Send the email only if the image is accepted
         # and if we have an email, of course
-        if self.state == 'accepted' and self.author_email:
+        if self.accepted and self.author_email:
             # If we are accepting an image, old_image is not provided or
             # the old day is different than what it was before, send the
             # "first timer" message
@@ -150,9 +148,14 @@ class Image(mapping.Document):
                                [self.author_email])
 
         return self
-        
+
     def delete(self, db):
-        # Delete image file
+        # Puts the image in the 'deleted' state
+        self.state = 'deleted'
+        self.store(db)
+
+    def delete_permanently(self, db):
+        # Removes image document AND files.
         full_filename = os.path.join(config['images_dir'], self.filename)
         os.remove(full_filename)
 
@@ -167,10 +170,20 @@ class Image(mapping.Document):
         # Delete the actual document
         db.delete(self)
 
+    # The possible states
+    states = ['accepted', 'pending', 'deleted']
+
     pending_by_time = mapping.ViewField('images', '''
         function(doc) {
             if (doc.type == 'Image' && doc.state == 'pending') {
                 emit(doc.submitted, doc);
+            }
+        }''')
+    
+    deleted_by_time = mapping.ViewField('images', '''
+        function(doc) {
+            if (doc.type == 'Image' && doc.state == 'deleted') {
+               emit(doc.submitted, doc);
             }
         }''')
 

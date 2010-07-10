@@ -65,4 +65,5 @@ class User(mapping.Document):
     permissions = {
         'review_images': ['Admin', 'Reviewer'],
         'manage_users': ['Admin'],
+        'delete_images': ['Admin'],
         }
