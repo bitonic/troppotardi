@@ -72,25 +72,16 @@ class Image(mapping.Document):
             self.submitted = datetime.utcnow()
             self.author_ip = request.environ['REMOTE_ADDR']
 
-        # If the accept argument is passed, we schedule it for the
-        # next available day
-        if self.accepted and (not self.day):
 
-            today = datetime.utcnow()
-            today = datetime(today.year, today.month, today.day)
-            
-            # Get the image with the futuremost day
-            days = list(Image.by_day(tmpl_context.db, descending=True, limit=1))
-            
-            # If that day is before then today, or if there are no images at
-            # all, schedule it for today
-            if (days and (days[0].day < today)) or (not days):
-                self.day = today
-            # Else, schedule it for the day after that day
+        if self.accepted:
+            if self.day:
+                # We check that that's the only image we have that day
+                days = list(Image.by_day(db, descending=True, startkey=self.day, limit=2))
+                # If there is more than one image on that day, we reschedule it.
+                if len(days) > 1:
+                    self.schedule(db)
             else:
-                last_day = days[0].day
-                self.day = datetime(last_day.year, last_day.month,
-                                    last_day.day) + timedelta(days=1)
+                self.schedule(db)
 
         # If there is a user in the session, store it in the revision
         if 'user' in session:
@@ -103,23 +94,7 @@ class Image(mapping.Document):
         # because we use the id as a filename, and we need to store the image
         # first to get an id.
         if image_file:
-            # Get the image format...
-            format = imghdr.what(image_file)
-            # Only png and jpeg files. There is already a check with the validator
-            # but you never know (:
-            if format == 'png' or format == 'jpeg':
-
-                self.filename = self.id + '.' + format
-                # Store again with the filename
-                super(Image, self).store(db)
-                
-                # Open the new file
-                permanent_file = open(self.path, 'w')
-                
-                # Copy the temp file to its destination
-                shutil.copyfileobj(image_file, permanent_file)
-                image_file.close() # close everything
-                permanent_file.close()
+            self.store_file(image_file, self.id, db)
 
         # Send the email only if the image is accepted
         # and if we have an email, of course
@@ -127,7 +102,7 @@ class Image(mapping.Document):
             # If we are accepting an image, old_image is not provided or
             # the old day is different than what it was before, send the
             # "first timer" message
-            if accept and ((not old_image) or (old_image.day != self.day)):
+            if (not old_image) or (not old_image.day) or (old_image.day == self.day):
                 # Sends the email
                 tmpl_context.day = self.day
                 tmpl_context.author = self.author
@@ -149,6 +124,43 @@ class Image(mapping.Document):
 
         return self
 
+    def store_file(self, image_file, new_filename, db):
+        # Get the image format...
+        format = imghdr.what(image_file)
+        # Only png and jpeg files. There is already a check with the validator
+        # but you never know (:
+        if format == 'png' or format == 'jpeg':
+            
+            self.filename = new_filename + '.' + format
+            # Store again with the filename
+            super(Image, self).store(db)
+            
+            # Open the new file
+            permanent_file = open(self.path, 'w')
+                
+            # Copy the temp file to its destination
+            shutil.copyfileobj(image_file, permanent_file)
+            image_file.close() # close everything
+            permanent_file.close()
+
+    def schedule(self, db):
+        """Schedules the image to the first available day"""
+        today = datetime.utcnow()
+        today = datetime(today.year, today.month, today.day)
+        
+        # Get the image with the futuremost day
+        days = list(Image.by_day(db, descending=True, limit=1))
+        
+        # If that day is before then today, or if there are no images at
+        # all, schedule it for today
+        if (days and (days[0].day < today)) or (not days):
+            self.day = today
+        # Else, schedule it for the day after that day
+        else:
+            last_day = days[0].day
+            self.day = datetime(last_day.year, last_day.month,
+                                last_day.day) + timedelta(days=1)
+            
     def delete(self, db):
         # Puts the image in the 'deleted' state
         self.state = 'deleted'
