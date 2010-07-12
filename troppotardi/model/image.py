@@ -6,7 +6,7 @@ import imghdr
 from PIL import Image as PILImage
 import webhelpers.html.tags as tags
 from webhelpers.html.builder import make_tag
-from pylons import config, session, tmpl_context, request
+from pylons import config, session, tmpl_context, request, url as pylons_url
 
 from troppotardi.lib.base import render
 from troppotardi.lib.mapping import DayField
@@ -38,7 +38,7 @@ class Image(mapping.Document):
     def url(self):
         """Returns the (relative, without the domain) url"""
         return os.path.join(config['images_base_url'], self.filename)
-    
+
     @property
     def pending(self):
         return self.state == 'pending'
@@ -106,7 +106,7 @@ class Image(mapping.Document):
                 # Sends the email
                 tmpl_context.day = self.day
                 tmpl_context.author = self.author
-                tmpl_context.image_url = config['base_url'] + self.url
+                tmpl_context.image_url = pylons_url(str(self.url), qualified=True)
                 send_email(render('/emails/accepted.mako'),
                            'troppotardi.com',
                            [self.author_email])
@@ -117,7 +117,7 @@ class Image(mapping.Document):
                 if self.author_email and self.accepted:
                     tmpl_context.day = self.day
                     tmpl_context.author = self.author
-                    tmpl_context.image_url = config['base_url'] + self.url
+                    tmpl_context.image_url = pylons_url(str(self.url), qualified=True)
                     send_email(render('/emails/accepted_again.mako'),
                                'troppotardi.com',
                                [self.author_email])
@@ -129,7 +129,7 @@ class Image(mapping.Document):
         format = imghdr.what(image_file)
         # Only png and jpeg files. There is already a check with the validator
         # but you never know (:
-        if format == 'png' or format == 'jpeg':
+        if format in ['png', 'jpeg']:
             
             self.filename = new_filename + '.' + format
             # Store again with the filename

@@ -24,6 +24,7 @@ def make_map(config):
     map.connect('show_image', '/image/{day}', controller='images', action='show')
     map.connect('last', '/images/last', controller='images', action='last')
     map.connect('page', '/pages/{page}', controller='pages', action='index')
+    map.connect('feed', '/feed.atom', controller='feed', action='index')
     
     map.connect('admin_home', '/admin/', controller='admin', action='index')
 

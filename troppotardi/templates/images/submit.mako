@@ -1,4 +1,4 @@
-<%inherit file="/images/base.mako"/>
+<%inherit file="/layout.mako"/>
 
 <%def name="title()">${parent.title()} Submit an image</%def>
 

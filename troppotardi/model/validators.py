@@ -24,7 +24,7 @@ class ImageFormat(formencode.FancyValidator):
 class ImageSize(formencode.FancyValidator):
     """Checks that the size of the image is appropriate"""
     def _to_python(self, value, state):
-        # Checks the file size. There is already a check for 10MB at
+        # Checks the file size. There is already a check for 4MB at
         # the request level, but this displays a nicer output for 2MB-4MB
         # files...
         value.file.seek(0, 2)
@@ -34,7 +34,7 @@ class ImageSize(formencode.FancyValidator):
                 value, state)
         value.file.seek(0, 0)
 
-        # For some reason, this fucks up the file. I have to solve this
+        # For some reason, this messes up the file. I have to solve this
         """
         im = PILImage.open(value.file)
         (width, height) = im.size
