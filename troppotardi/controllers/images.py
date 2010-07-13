@@ -22,7 +22,7 @@ class ImagesController(BaseController):
     def show(self, day):
         """Shows a single image"""
         c.image = list(Image.by_day(self.db, startkey=day))[0]
-
+        
         # Gets the older image (if there is one), the startkey is
         # the day of the image and the list is in descending order
         olders = list(Image.by_day(self.db,

@@ -17,7 +17,7 @@ def setup_app(command, conf, vars):
     print "Syncing the couchdb database..."
     db = Database(config['couchdb_uri'])
     ViewDefinition.sync_many(db, [
-            Image.pending_by_time, Image.by_day, Image.by_month, Image.deleted_by_time,
+            Image.pending_by_time, Image.by_day, Image.deleted_by_time,
             User.by_time, User.by_username,
             ])
 

@@ -54,7 +54,7 @@ class AdminController(BaseController):
     def accepted(self):
         # All the accepted images (the one with a scheduled day)
         c.images = Image.by_day(self.db, descending=True)
-        
+
         return render('/admin/accepted.mako')
 
     @authorize('review_images')
@@ -89,7 +89,7 @@ class AdminController(BaseController):
     @dispatch_on(POST='_doedit')
     def edit(self, id):
         c.image = Image.load(self.db, id)
-        
+
         return render('/admin/edit.mako')
 
     @authorize('review_images')
@@ -97,6 +97,7 @@ class AdminController(BaseController):
     @validate(schema=EditImage(), form='edit')
     def _doedit(self, id):
         image = Image.load(self.db, id)
+
         old_image = deepcopy(image)
         
         image.author = request.params.getone('author')

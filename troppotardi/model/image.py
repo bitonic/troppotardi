@@ -9,7 +9,7 @@ from webhelpers.html.builder import make_tag
 from pylons import config, session, tmpl_context, request, url as pylons_url
 
 from troppotardi.lib.base import render
-from troppotardi.lib.mapping import DayField
+from troppotardi.lib.mapping import DayField, day_to_str
 from troppotardi.lib.image_utils import thumbnailer
 from troppotardi.lib.utils import send_email
 
@@ -24,6 +24,7 @@ class Image(mapping.Document):
 
     submitted = mapping.DateTimeField()
     day = DayField()
+    prev_day = DayField()
     revised_by = mapping.TextField()
     state = mapping.TextField(default='pending')
 
@@ -66,7 +67,7 @@ class Image(mapping.Document):
                 thumb = thumbnailer(self.filename, max_height=max_height)
             return make_tag('a', href=self.url, c=tags.image(thumb, None))
 
-    def store(self, db, image_file=None, old_image=None):
+    def store(self, db, image_file=None):
         # Record the date of submission and the ip of the submitter
         if not self.submitted:
             self.submitted = datetime.utcnow()
@@ -76,12 +77,40 @@ class Image(mapping.Document):
         if self.accepted:
             if self.day:
                 # We check that that's the only image we have that day
-                days = list(Image.by_day(db, descending=True, startkey=self.day, limit=2))
+                days = list(Image.by_day(db,
+                                         descending=True,
+                                         startkey=day_to_str(self.day),
+                                         limit=2))
                 # If there is more than one image on that day, we reschedule it.
                 if len(days) > 1:
                     self.schedule(db)
             else:
                 self.schedule(db)
+
+        # Send the email only if the image is accepted
+        # and if we have an email, of course
+        if self.accepted and self.author_email:
+            # If there is no previous day, then it means that we are scheduling
+            # the image for the first time.
+            if not self.prev_day:
+                # Sends the email
+                tmpl_context.day = self.day
+                tmpl_context.author = self.author
+                tmpl_context.image_url = pylons_url(str(self.url), qualified=True)
+                send_email(render('/emails/accepted.mako'),
+                           'troppotardi.com',
+                           [self.author_email])
+            # Else, we are rescheduling it.
+            elif self.prev_day != self.day:
+                # Sends the reschedule email
+                tmpl_context.day = self.day
+                tmpl_context.author = self.author
+                tmpl_context.image_url = pylons_url(str(self.url), qualified=True)
+                send_email(render('/emails/accepted_again.mako'),
+                           'troppotardi.com',
+                           [self.author_email])
+            # Now we can set the prev_day to the present day
+            self.prev_day = self.day
 
         # If there is a user in the session, store it in the revision
         if 'user' in session:
@@ -95,32 +124,6 @@ class Image(mapping.Document):
         # first to get an id.
         if image_file:
             self.store_file(image_file, self.id, db)
-
-        # Send the email only if the image is accepted
-        # and if we have an email, of course
-        if self.accepted and self.author_email:
-            # If we are accepting an image, old_image is not provided or
-            # the old day is different than what it was before, send the
-            # "first timer" message
-            if (not old_image) or (not old_image.day) or (old_image.day == self.day):
-                # Sends the email
-                tmpl_context.day = self.day
-                tmpl_context.author = self.author
-                tmpl_context.image_url = pylons_url(str(self.url), qualified=True)
-                send_email(render('/emails/accepted.mako'),
-                           'troppotardi.com',
-                           [self.author_email])
-            # Else, if there is an old image and the old image was scheduled
-            # for a different day, send the "re-scheduled" message.
-            elif old_image and (old_image.day != self.day):
-                # Sends the reschedule email
-                if self.author_email and self.accepted:
-                    tmpl_context.day = self.day
-                    tmpl_context.author = self.author
-                    tmpl_context.image_url = pylons_url(str(self.url), qualified=True)
-                    send_email(render('/emails/accepted_again.mako'),
-                               'troppotardi.com',
-                               [self.author_email])
 
         return self
 
@@ -212,16 +215,4 @@ class Image(mapping.Document):
                    submitted: doc.submitted,
                });
            }
-        }''')
-
-    by_month = mapping.ViewField('images', '''
-        function(doc) {
-            if (doc.type == 'Image' && doc.state == 'accepted') {
-                var year = parseInt(doc.submitted.substr(0, 4), 10);
-                var month = parseInt(doc.submitted.substr(5, 2), 10);
-                emit([year, month, doc.day], {
-                    author: doc.author, filename: doc.filename,
-                    author_url: doc.author_url, day: doc.day,
-                });
-            }
         }''')
