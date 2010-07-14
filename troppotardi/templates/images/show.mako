@@ -1,3 +1,4 @@
+
 <%inherit file="/layout.mako"/>
 
 <%def name="title()">${parent.title()} ${c.image.author}</%def>
@@ -5,7 +6,7 @@
 <div id="text">
     <b>
     % if c.image.author_url:
-        <a href="${c.image.author_url}">${c.image.author}</a>
+        <a href="${c.image.author_url}" target="_blank">${c.image.author}</a>
     % else:
         ${c.image.author}
     % endif

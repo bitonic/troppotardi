@@ -8,7 +8,7 @@ ${next.body()}
 <a href="${h.url(controller='images', action='months')}">Archive</a> &middot;
 <a href="${h.url(controller='images', action='submit')}" class="submitlink">Submit Image</a> &middot;
 <a href="${h.url(controller='pages', action='index', page='about')}">About</a> &middot;
-<a href="http://bitbucket.org/rostayob/troppotardi/">Source</a> &middot;
+<a href="http://bitbucket.org/rostayob/troppotardi/" target="_blank">Source</a> &middot;
 <a href="${h.url('home')}">Home</a>
 </%def>
 

@@ -38,7 +38,7 @@ class AdminController(BaseController):
         for id in to_accept:
             image = Image.load(self.db, id)
             image.state = 'accepted'
-            image.store(self.db, old_image=deepcopy(image))
+            image.store(self.db)
         
         # These are the ones to delete
         to_delete = request.POST.getall('delete')
@@ -97,8 +97,6 @@ class AdminController(BaseController):
     @validate(schema=EditImage(), form='edit')
     def _doedit(self, id):
         image = Image.load(self.db, id)
-
-        old_image = deepcopy(image)
         
         image.author = request.params.getone('author')
         image.author_url = request.params.getone('author_url')
@@ -115,7 +113,7 @@ class AdminController(BaseController):
         
         image.state = self.form_result.get('state')
 
-        image.store(self.db, old_image=old_image)
+        image.store(self.db)
 
         flash('Image successfully edited')
         redirect(url(controller='admin', action='edit', id=id))

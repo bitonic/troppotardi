@@ -34,17 +34,16 @@ class ImageSize(formencode.FancyValidator):
                 value, state)
         value.file.seek(0, 0)
 
-        # For some reason, this messes up the file. I have to solve this
+        # Checks the dimensions of the image
         """
         im = PILImage.open(value.file)
         (width, height) = im.size
         
-        if width < 500 or height < 500:
+        if (width < 600 and height < 600) or (width < 400) or (height < 400):
             raise formencode.Invalid(
-                'The image must be at least 500 by 500 pixels.',
-                value, state)
-                """
-                
+                'The image must have one side bigger than 600px, and the other bigger than 400px.',
+                value, state)"""
+
         return value
 
 class VerifyUser(formencode.FancyValidator):
