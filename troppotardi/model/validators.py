@@ -93,14 +93,14 @@ class UniqueDate(formencode.FancyValidator):
                                       month=int(field_dict['month']),
                                       day=int(field_dict['day'])))
             
-            imgs = list(Image.by_day(tmpl_context.db, startkey=day, limit=2))
+            imgs = list(Image.by_day(tmpl_context.db, startkey=day, endkey=day))
 
             # Checks that there are no different images from this with
             # the same day.
-            if imgs and imgs[0].id != field_dict['id'] and day_to_str(imgs[0].day) == day:
-                        raise formencode.Invalid(
-                            'The day you entered already exists.',
-                            field_dict, state)
+            if imgs and imgs[0].id != field_dict['id']:
+                raise formencode.Invalid(
+                    'The day you entered already exists.',
+                    field_dict, state)
 
 class ReCaptcha(formencode.FancyValidator):
     def validate_python(self, field_dict, state):

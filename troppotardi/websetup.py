@@ -6,7 +6,7 @@ from couchdb.design import ViewDefinition
 import pylons.test
 
 from troppotardi.config.environment import load_environment
-from troppotardi.model import Image, User
+from troppotardi.model import Image, User, Email
 
 log = logging.getLogger(__name__)
 
@@ -19,6 +19,7 @@ def setup_app(command, conf, vars):
     ViewDefinition.sync_many(db, [
             Image.pending_by_time, Image.by_day, Image.deleted_by_time,
             User.by_time, User.by_username,
+            Email.by_time,
             ])
 
     if not list(User.by_username(db)):

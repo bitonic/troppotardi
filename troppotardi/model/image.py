@@ -8,10 +8,11 @@ import webhelpers.html.tags as tags
 from webhelpers.html.builder import make_tag
 from pylons import config, session, tmpl_context, request, url as pylons_url
 
+from troppotardi.model.email import Email
 from troppotardi.lib.base import render
 from troppotardi.lib.mapping import DayField, day_to_str
 from troppotardi.lib.image_utils import thumbnailer
-from troppotardi.lib.utils import send_email
+from troppotardi.lib.helpers import flash
 
 class Image(mapping.Document):
     type = mapping.TextField(default='Image')
@@ -77,38 +78,45 @@ class Image(mapping.Document):
         if self.accepted:
             if self.day:
                 # We check that that's the only image we have that day
-                days = list(Image.by_day(db,
-                                         descending=True,
-                                         startkey=day_to_str(self.day),
-                                         limit=2))
-                # If there is more than one image on that day, we reschedule it.
-                if len(days) > 1:
+                days = Image.by_day(db,
+                                    descending=False,
+                                    startkey=day_to_str(self.day),
+                                    endkey=day_to_str(self.day),
+                                    )
+
+                # If there is, schedule it, and warn who edited it
+                if days and (list(days)[0].id != self.id):
+                    flash("The day you selected was already taken, so the photo has been scheduled automatically")
                     self.schedule(db)
             else:
                 self.schedule(db)
 
-        # Send the email only if the image is accepted
+        # Saves the email only if the image is accepted
         # and if we have an email, of course
         if self.accepted and self.author_email:
             # If there is no previous day, then it means that we are scheduling
             # the image for the first time.
             if not self.prev_day:
-                # Sends the email
+                # Saves the email
                 tmpl_context.day = self.day
                 tmpl_context.author = self.author
                 tmpl_context.image_url = pylons_url(str(self.url), qualified=True)
-                send_email(render('/emails/accepted.mako'),
-                           'troppotardi.com',
-                           [self.author_email])
+                email = Email(text=render('/emails/accepted.mako'),
+                              subject='troppotardi.com',
+                              recipients=[self.author_email],
+                              )
+                email.store(db)
             # Else, we are rescheduling it.
             elif self.prev_day != self.day:
-                # Sends the reschedule email
+                # Saves the reschedule email
                 tmpl_context.day = self.day
                 tmpl_context.author = self.author
                 tmpl_context.image_url = pylons_url(str(self.url), qualified=True)
-                send_email(render('/emails/accepted_again.mako'),
-                           'troppotardi.com',
-                           [self.author_email])
+                email = Email(text=render('/emails/accepted_again.mako'),
+                              subject='troppotardi.com',
+                              recipients=[self.author_email],
+                              )
+                email.store(db)
             # Now we can set the prev_day to the present day
             self.prev_day = self.day
 
