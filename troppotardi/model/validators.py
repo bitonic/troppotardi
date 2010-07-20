@@ -9,6 +9,7 @@ from PIL import Image as PILImage
 from pylons import tmpl_context, request, config
 from troppotardi.model import User, Image
 from troppotardi.lib.mapping import day_to_str
+from troppotardi.lib.utils import visitor_ip
 
 class ImageFormat(formencode.FancyValidator):
     """Verifies that the image submitted is an image"""
@@ -106,7 +107,7 @@ class ReCaptcha(formencode.FancyValidator):
     def validate_python(self, field_dict, state):
         values = {
             'privatekey': config['recaptcha_privkey'],
-            'remoteip': request.environ['REMOTE_ADDR'],
+            'remoteip': visitor_ip(),
             'challenge': field_dict['recaptcha_challenge_field'],
             'response': field_dict['recaptcha_response_field'],
             }

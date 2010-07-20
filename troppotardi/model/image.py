@@ -13,6 +13,7 @@ from troppotardi.lib.base import render
 from troppotardi.lib.mapping import DayField, day_to_str
 from troppotardi.lib.image_utils import thumbnailer
 from troppotardi.lib.helpers import flash
+from troppotardi.lib.utils import visitor_ip
 
 class Image(mapping.Document):
     type = mapping.TextField(default='Image')
@@ -72,7 +73,7 @@ class Image(mapping.Document):
         # Record the date of submission and the ip of the submitter
         if not self.submitted:
             self.submitted = datetime.utcnow()
-            self.author_ip = request.environ['REMOTE_ADDR']
+            self.author_ip = visitor_ip()
 
 
         if self.accepted:

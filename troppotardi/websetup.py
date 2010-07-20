@@ -32,4 +32,3 @@ def setup_app(command, conf, vars):
         admin.store(db, revised_by=False)
 
     print "Done."
-    

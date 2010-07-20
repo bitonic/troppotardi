@@ -14,6 +14,7 @@ from troppotardi.model.forms import AddUser, EditUser, EditImage
 from troppotardi.lib.helpers import flash
 from troppotardi.lib.utils import generate_password, send_email
 from troppotardi.lib import authorize
+from troppotardi.lib.mapping import day_to_str
 
 class AdminController(BaseController):
 
@@ -23,8 +24,22 @@ class AdminController(BaseController):
     @authorize('review_images')
     @dispatch_on(POST='_dopending')
     def pending(self):
-        # Gets every pending image
-        c.images = Image.pending_by_time(self.db, descending=True)
+        startkey = request.GET.get('startkey')
+        endkey = request.GET.get('prevkey')
+        if startkey:
+            c.images = Image.pending_by_time(self.db,
+                                             descending=True,
+                                             startkey=startkey,
+                                             limit=11)
+        elif endkey:
+            c.images = Image.pending_by_time(self.db,
+                                             descending=False,
+                                             endkey=endkey,
+                                             inclusive_end=False,
+                                             limit=11)
+        else:
+            c.images = Image.pending_by_time(self.db,
+                                             descending=True)
 
         return render('/admin/pending.mako')
 
@@ -106,7 +121,7 @@ class AdminController(BaseController):
         # is exposed in the form. we don't change the day if we are
         # setting the image to pending, since this creates problems
         # when detecting if the image has changed date
-        if 'change_day' in self.form_result and request.params.getone('state') == 'accepted':
+        if ('change_day' in self.form_result) and request.params.getone('state') == 'accepted':
             image.day = datetime(year=int(self.form_result.get('year')),
                                  month=int(self.form_result.get('month')),
                                  day=int(self.form_result.get('day')))
