@@ -1,4 +1,3 @@
-
 <%inherit file="/layout.mako"/>
 
 <%def name="title()">${parent.title()} ${c.image.author}</%def>

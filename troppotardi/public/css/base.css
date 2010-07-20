@@ -6,7 +6,7 @@
 body {
     margin:3px 0 20px 0;
     color:#191919;
-    font-family:Consolas, Inconsolata, monospace;
+    font-family:Consolas, Inconsolata, "Courier New", Courier, monospace;
 }
 
 a, a:visited {
@@ -131,17 +131,39 @@ img {
     padding-bottom: 10px;
 }
 
+#months img {
+    border:none;
+    padding:0;
+    opacity:0.4;
+    filter:alpha(opacity=40)
+}
+
+#months img:hover {
+    opacity:1;
+    filter:alpha(opacity=100)
+}
+
 #months ul {
     list-style-type: none;
+}
+
+.month {
+    font-weight:bold;
 }
 
 #months li {
     float:left;
     text-align:center;
+    width:118px;
+    height:118px;
+    padding:0;
+    border:0;
+    line-height:118px;
 }
 
-.month {
-    font-weight:bold;
+#months hr {
+    clear:both;
+    visibility:hidden;
 }
 
 #about {
