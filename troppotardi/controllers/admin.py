@@ -24,22 +24,8 @@ class AdminController(BaseController):
     @authorize('review_images')
     @dispatch_on(POST='_dopending')
     def pending(self):
-        startkey = request.GET.get('startkey')
-        endkey = request.GET.get('prevkey')
-        if startkey:
-            c.images = Image.pending_by_time(self.db,
-                                             descending=True,
-                                             startkey=startkey,
-                                             limit=11)
-        elif endkey:
-            c.images = Image.pending_by_time(self.db,
-                                             descending=False,
-                                             endkey=endkey,
-                                             inclusive_end=False,
-                                             limit=11)
-        else:
-            c.images = Image.pending_by_time(self.db,
-                                             descending=True)
+        c.images = Image.pending_by_time(self.db,
+                                         descending=True)
 
         return render('/admin/pending.mako')
 

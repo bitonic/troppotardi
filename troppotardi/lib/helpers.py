@@ -8,7 +8,7 @@ from webhelpers.html.tags import *
 from webhelpers.html.builder import literal
 from webhelpers.pylonslib import Flash as _Flash
 from pylons import config
-from troppotardi.lib.image_utils import *
+from troppotardi.lib import thumbnailer
 from troppotardi.lib.mapping import day_to_str
 
 flash = _Flash()

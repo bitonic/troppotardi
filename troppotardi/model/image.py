@@ -11,7 +11,7 @@ from pylons import config, session, tmpl_context, request, url as pylons_url
 from troppotardi.model.email import Email
 from troppotardi.lib.base import render
 from troppotardi.lib.mapping import DayField, day_to_str
-from troppotardi.lib.image_utils import thumbnailer
+from troppotardi.lib import thumbnailer
 from troppotardi.lib.helpers import flash
 from troppotardi.lib.utils import visitor_ip
 
@@ -56,18 +56,6 @@ class Image(mapping.Document):
         # Assign every kwarg to self
         for k in kwargs:
             setattr(self, k, kwargs[k])
-            
-    def admin_thumb(self, max_width=None, max_height=None):
-        """Returns an <img> tag for the listings in the admin page"""
-        if self.filename:
-            image = PILImage.open(self.path)
-            (width, height) = image.size
-            
-            if max_width and width > max_width:
-                thumb = thumbnailer(self.filename, max_width=max_width)
-            if max_height and height > max_height:
-                thumb = thumbnailer(self.filename, max_height=max_height)
-            return make_tag('a', href=self.url, c=tags.image(thumb, None))
 
     def store(self, db, image_file=None):
         # Record the date of submission and the ip of the submitter
