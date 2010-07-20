@@ -11,3 +11,4 @@ if __name__ == '__main__':
     db.compact('images')
     db.compact('users')
     db.compact('emails')
+
