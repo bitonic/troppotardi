@@ -32,23 +32,25 @@ img {
 
 #text {
     font-size:120%;
-    margin:8px 0 5px 0;
+    margin:8px 0 0 0;
 }
 
 #text a {
-    border-bottom:1px solid black;
+    text-decoration:underline;
 }
 
 #prevnext {
     font-weight:bold;
     padding:0 10px;
-    height:20px;
+    height:30px;
 }
 
 #previous {
     padding:0;
     float:left;
-    width:200px;
+    width:223px;
+    height:10px;
+    font-size:170%;
 }
 
 #next {
@@ -56,6 +58,21 @@ img {
     float:right;
     width:200px;
     text-align:right;
+    height:10px;
+    font-size:170%;
+}
+
+#fullsize {
+    padding:5px 0 0 0;
+    float:left;
+    width:200px;
+    height:10px;
+    text-align:center;
+    font-weight:normal;
+}
+
+#fullsize a {
+    text-decoration:underline;
 }
 
 #footer {
@@ -67,7 +84,7 @@ img {
 }
 
 #footer a {
-    border-bottom:1px solid black;
+    text-decoration:underline;
 }
 
 #submit-form li {
@@ -149,16 +166,17 @@ img {
 
 .month {
     font-weight:bold;
+    width:122px;
 }
 
 #months li {
     float:left;
     text-align:center;
-    width:118px;
-    height:118px;
+    width:122x;
+    height:122px;
     padding:0;
     border:0;
-    line-height:118px;
+    line-height:122px;
 }
 
 #months hr {

@@ -25,3 +25,7 @@ def day_to_str(daydate):
     in the string"""
     daydate = daydate.strftime("%Y-%m-%d")
     return daydate
+
+def str_to_day(daystr):
+    timestamp = timegm(strptime(daystr, '%Y-%m-%d'))
+    return datetime.utcfromtimestamp(timestamp)

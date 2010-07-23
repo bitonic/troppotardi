@@ -16,23 +16,30 @@
     % endif
 </div>
 
+<div id="prevnext">
 % if hasattr(c, 'older') or hasattr(c, 'newer'):
-    <div id="prevnext">
+    <div id="previous">
     % if hasattr(c, 'newer'):
-        <div id="previous">
-            <a href="${h.url(controller='images', action='show', day=c.newer)}">newer</a>
-        </div>
-    % endif
-    % if hasattr(c, 'older'):
-        <div id="next">
-            <a href="${h.url(controller='images', action='show', day=c.older)}">older</a>
-        </div>
+            <a href="${h.url(controller='images', action='show', day=c.newer)}">&larr;</a>
     % endif
     </div>
+    <div id="fullsize">
+        <a href="${c.image.url}" alt="Fullsize image">Fullsize image</a>
+    </div>
+    % if hasattr(c, 'older'):
+        <div id="next">
+            <a href="${h.url(controller='images', action='show', day=c.older)}">&rarr;</a>
+        </div>
+    % endif
 % endif
+</div>
 
 <div id="img_div">
-    <a href="${c.image.url}">
+    % if hasattr(c, 'older'):
+        <a href="${h.url(controller='images', action='show', day=c.older)}">
+            <img src="${h.thumbnailer(c.image.filename, max_width=690, max_height=690)}" alt="${c.image.day}" id="image" />
+        </a>
+    % else:
         <img src="${h.thumbnailer(c.image.filename, max_width=690, max_height=690)}" alt="${c.image.day}" id="image" />
-    </a>
+    % endif
 </div>

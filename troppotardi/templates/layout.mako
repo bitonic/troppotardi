@@ -16,18 +16,6 @@ ${next.body()}
 <%def name="head()">
 ${parent.head()}
 <link href="${h.url('feed', qualified=True)}" rel="alternate" title="troppotardi.com Image Feed" type="application/atom+xml" /> 
-<script src="/js/cufon-yui.js" type="text/javascript"></script>
-<script src="/js/Consolas_400-Consolas_700-Consolas_italic_400.font.js" type="text/javascript"></script>
-<script type="text/javascript">
-Cufon.replace('#about');
-Cufon.replace('#text');
-Cufon.replace('#submit-form');
-Cufon.replace('#previous');
-Cufon.replace('#next');
-Cufon.replace('#footer');
-Cufon.replace('#months');
-Cufon.replace('#flash');
-</script>
 ${h.stylesheet_link('/css/base.css')}
 ${h.google_analytics()}
 </%def>

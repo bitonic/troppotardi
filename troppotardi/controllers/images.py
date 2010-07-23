@@ -13,41 +13,44 @@ from troppotardi.lib import return_to
 from troppotardi.lib.helpers import flash
 from troppotardi.model.forms import ImageSubmit
 from troppotardi.model import Image
-from troppotardi.lib.mapping import day_to_str
+from troppotardi.lib.mapping import day_to_str, str_to_day
 
 log = logging.getLogger(__name__)
 
 class ImagesController(BaseController):
 
     def show(self, day):
-        """Shows a single image"""
-        c.image = list(Image.by_day(self.db, startkey=day))[0]
-        
-        # Gets the older image (if there is one), the startkey is
-        # the day of the image and the list is in descending order
-        olders = list(Image.by_day(self.db,
-                                   descending=True,
-                                   limit=2,
-                                   startkey=day))
-
-        # If there is one store it
-        if len(olders) > 1:
-            c.older = day_to_str(olders[1].day)
+        if str_to_day(day) > datetime.utcnow():
+            abort(404)
+        else:
+            """Shows a single image"""
+            c.image = list(Image.by_day(self.db, startkey=day))[0]
+            
+            # Gets the older image (if there is one), the startkey is
+            # the day of the image and the list is in descending order
+            olders = list(Image.by_day(self.db,
+                                       descending=True,
+                                       limit=2,
+                                       startkey=day))
+            
+            # If there is one store it
+            if len(olders) > 1:
+                c.older = day_to_str(olders[1].day)
             
 
-        # Same thing, but the list is in ascending order for the
-        # newer images
-        newers = list(Image.by_day(self.db,
-                                   limit=2,
-                                   startkey=day))
+            # Same thing, but the list is in ascending order for the
+            # newer images
+            newers = list(Image.by_day(self.db,
+                                       limit=2,
+                                       startkey=day))
 
-        # We check that the newer image is not in a future date
-        if (len(newers) > 1) and (datetime.utcnow() >= newers[1].day):
-            c.newer = day_to_str(newers[1].day)
+            # We check that the newer image is not in a future date
+            if (len(newers) > 1) and (datetime.utcnow() >= newers[1].day):
+                c.newer = day_to_str(newers[1].day)
             
-        session['return_to'] = url(controller='images', action='show', day=day)
-
-        return render('/images/show.mako')
+            session['return_to'] = url(controller='images', action='show', day=day)
+            
+            return render('/images/show.mako')
 
     def months(self):
         # Of course we start from the present day (since there could be
@@ -84,6 +87,7 @@ class ImagesController(BaseController):
         # We get the last image from the present day.
         day = list(Image.by_day(self.db,
                                 limit=1,
-                                startkey=day_to_str(datetime.utcnow())))[0].day
+                                startkey=day_to_str(datetime.utcnow()),
+                                descending=True))[0].day
 
         redirect(url(controller='images', action='show', day=day_to_str(day)))

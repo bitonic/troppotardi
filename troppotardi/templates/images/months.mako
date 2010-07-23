@@ -20,7 +20,7 @@
                 </li>
             % endif
         <li>
-            <a href="${h.url(controller='images', action='show', day=h.day_to_str(image.day))}"><img src="${h.thumbnailer(image.filename, max_width=118, max_height=118, crop=True)}" alt="${image.author} - ${image.day.strftime('%d-%m-%Y')}"/></a>
+            <a href="${h.url(controller='images', action='show', day=h.day_to_str(image.day))}"><img src="${h.thumbnailer(image.filename, max_width=122, max_height=122, crop=True)}" alt="${image.author} - ${image.day.strftime('%d-%m-%Y')}"/></a>
         </li>
         % endfor
     </ul>
