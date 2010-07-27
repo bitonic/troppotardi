@@ -20,7 +20,7 @@
         </tr>
     % for image in images:
         <tr>
-            <td><img src="${h.thumbnailer(image.filename, max_width=200)}" /></td>
+            <td><a href="${image.url}"><img src="${h.thumbnailer(image.filename, max_width=200)}" /></a></td>
             <td>
 	        % if image.author_url:
 	            <a href="${image.author_url}">${image.author}</a></td>
