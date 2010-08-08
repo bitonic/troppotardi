@@ -100,6 +100,7 @@ class AdminController(BaseController):
         image = Image.load(self.db, id)
         
         image.author = request.params.getone('author')
+        image.author_email = request.params.getone('author_email')
         image.author_url = request.params.getone('author_url')
         image.text = request.params.getone('text')
 

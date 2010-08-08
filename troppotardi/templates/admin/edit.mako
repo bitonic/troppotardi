@@ -8,6 +8,7 @@ ${h.form(h.url(controller='admin', action='edit', id=c.image.id), method='POST')
 ${h.hidden("id", value=c.image.id)}
 Text:<br/>${h.textarea("text", cols=50, rows=10, content=c.image.text)}<br/>
 Author: ${h.text("author", value=c.image.author)}<br/>
+Author email: ${h.text("author_email", value=c.image.author_email)}<br/>
 Author website: ${h.text("author_url", value=c.image.author_url)}<br/>
 % if c.image.accepted:
     ${h.hidden("change_day", value="true")}
