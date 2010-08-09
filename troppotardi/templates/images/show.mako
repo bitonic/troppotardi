@@ -2,6 +2,29 @@
 
 <%def name="title()">${parent.title()} ${c.image.author}</%def>
 
+<%def name="head()">
+${parent.head()}
+<script type="text/javascript" src="/js/mootools-1.2.4-core-yc.js"></script>
+<script type="text/javascript">
+// Resizes the image if the screen height is not enough
+window.addEvent('domready', function() {
+    var image = $('image');
+    image.addEvent('load', function() {
+        if (image.getSize().y + 10 > window.getSize().y)
+        {
+            image_height = window.getSize().y - 10;
+            old_image_width = image.getSize().x;
+            image_width = image.width * image_height / image.getSize().y;
+            image.setProperties({
+                height: image_height,
+                width: image_width,
+            });
+        }
+    });
+});
+</script>
+</%def>
+
 <div id="text">
     <b>
     % if c.image.author_url:
