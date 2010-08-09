@@ -6,8 +6,8 @@
 ${parent.head()}
 <script type="text/javascript" src="/js/mootools-1.2.4-core-yc.js"></script>
 <script type="text/javascript">
-// Resizes the image if the screen height is not enough
 window.addEvent('domready', function() {
+    // Resizes the image if the screen height is not enough
     var image = $('image');
     image.addEvent('load', function() {
         if (image.getSize().y + 10 > window.getSize().y)
@@ -20,6 +20,20 @@ window.addEvent('domready', function() {
                 width: image_width,
             });
         }
+    });
+
+    // Adds arrows control
+    window.addEvent('keydown', function(event){
+        % if hasattr(c, 'newer'):
+            if (event.key == 'left') {
+                window.location = "${h.url(controller='images', action='show', day=c.newer, qualified=True)}";
+            }
+        % endif
+        % if hasattr(c, 'older'):
+            if (event.key == 'right') {
+                window.location = "${h.url(controller='images', action='show', day=c.older, qualified=True)}";
+            }
+        % endif
     });
 });
 </script>
