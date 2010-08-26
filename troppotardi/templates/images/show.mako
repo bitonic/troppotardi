@@ -6,13 +6,17 @@
 ${parent.head()}
 <script type="text/javascript" src="/js/mootools-1.2.4-core-yc.js"></script>
 <script type="text/javascript">
+function resize_image(image)
+{
+}
+    
 window.addEvent('domready', function() {
     // Resizes the image if the screen height is not enough
     var image = $('image');
     image.addEvent('load', function() {
-        if (image.getSize().y + 10 > window.getSize().y)
+        if (image.getSize().y + 20 > window.getSize().y && window.getSize().y > 450)
         {
-            image_height = window.getSize().y - 10;
+            image_height = window.getSize().y - 20;
             old_image_width = image.getSize().x;
             image_width = image.width * image_height / image.getSize().y;
             image.setProperties({

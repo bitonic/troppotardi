@@ -5,7 +5,15 @@
 <%def name="heading()">Review accepted images</%def>
 
 % if c.images:
-    <% images = list(c.images) %>
+    % if c.prevkey:
+        <b>
+        <a href="${h.url(controller='admin', action='accepted', endkey=c.prevkey)}">
+            Previous images
+        </a>
+	</b>
+	<br/>
+    % endif
+
     ${h.form(h.url(controller='admin', action='accepted'), method='POST')}
     <table border=1>
         <tr>
@@ -18,7 +26,7 @@
 	    <th>Edit</th>
 	    <th>Delete</th>
         </tr>
-        % for image in images:
+        % for image in c.images:
         <tr>
             <td><a href="${image.url}"><img src="${h.thumbnailer(image.filename, max_width=200)}"/></a></td>
             <td><a href="${image.author_url}">${image.author}</a></td>
@@ -30,9 +38,18 @@
             <td>${h.checkbox('delete', value=image.id, checked=False)}</td>
         </tr>
         % endfor
-</table>
-	${h.submit('submit', 'Delete')}
-	${h.end_form()}
+    </table>
+    ${h.submit('submit', 'Delete')}
+    ${h.end_form()}
+
+    % if c.nextkey:
+        <b>
+        <a href="${h.url(controller='admin', action='accepted', startkey=c.nextkey)}">
+            Next images
+        </a>
+	</b>
+	<br/>
+    % endif
 % else:
     No images to display.
 % endif

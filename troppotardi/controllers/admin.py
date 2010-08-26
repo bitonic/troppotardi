@@ -53,8 +53,30 @@ class AdminController(BaseController):
     @authorize('review_images')
     @dispatch_on(POST='_dopending')
     def accepted(self):
-        # All the accepted images (the one with a scheduled day)
-        c.images = Image.by_day(self.db, descending=True)
+        # Handles the pagination in a really simple way
+        startkey = request.GET.get('startkey')
+        endkey = request.GET.get('endkey')
+
+        if startkey:
+            c.images = list(Image.by_day(self.db, descending=True, startkey=startkey, limit=16))
+        elif endkey:
+            c.images = list(Image.by_day(self.db, descending=False, startkey=endkey, limit=16))
+            c.images.reverse()
+        else:
+            c.images = list(Image.by_day(self.db, descending=True, limit=16))
+
+        c.nextkey = c.prevkey = None
+        if c.images:
+            # If it's 16 elements long, save the key to get the next images
+            # and remove the last element (which serves just to see the next key)
+            if len(c.images) == 16:
+                c.nextkey = day_to_str(c.images[-1].day)
+                c.images = c.images[:-1]
+                
+            # If the image is not the first one, then save the key to get the
+            # previous images
+            if c.images[0].id != list(Image.by_day(self.db, descending=True, limit=1))[0].id:
+                c.prevkey = day_to_str(c.images[0].day)
 
         return render('/admin/accepted.mako')
 
