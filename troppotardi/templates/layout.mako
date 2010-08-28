@@ -1,5 +1,6 @@
 <%inherit file="/base.mako"/>
 
+${h.reinvigorate()}
 ${next.body()}
 
 <%def name="title()">${parent.title()}</%def>

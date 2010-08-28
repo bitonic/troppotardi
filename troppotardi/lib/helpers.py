@@ -19,6 +19,10 @@ def google_analytics():
     script = '\n<script type="text/javascript">\n\n  var _gaq = _gaq || [];\n  _gaq.push([\'_setAccount\', \'' + config['analytics_id'] + '\']);\n  _gaq.push([\'_trackPageview\']);\n\n  (function() {\n    var ga = document.createElement(\'script\'); ga.type = \'text/javascript\'; ga.async = true;\n    ga.src = (\'https:\' == document.location.protocol ? \'https://ssl\' : \'http://www\') + \'.google-analytics.com/ga.js\';\n    var s = document.getElementsByTagName(\'script\')[0]; s.parentNode.insertBefore(ga, s);\n  })();\n\n</script>'
     return literal(script)
 
+def reinvigorate():
+    script = '<script type="text/javascript" src="http://include.reinvigorate.net/re_.js"></script>\n<script type="text/javascript">\ntry {\nreinvigorate.track("' + config['reinvigorate_id'] + '");\n} catch(err) {}\n</script>'
+    return literal(script)
+
 def ordinal(value):
     try:
         value = int(value)
