@@ -7,16 +7,24 @@
     <%
     images = list(c.images)
     month = None
+    year = None
     %>
         <ul>
         % for image in images:
-            % if (not month) or (image.day.month != month) or (image.day.year != year):
+	    % if (not year) or (image.day.year != year):
                 <%
-                month = image.day.month
                 year = image.day.year
                 %>
                 <li class="month">
-                    ${image.day.strftime('%B %Y')}
+                    ${image.day.strftime('%Y')}
+                </li>
+            % endif
+            % if (not month) or (image.day.month != month):
+                <%
+                month = image.day.month
+                %>
+                <li class="month">
+                    ${h.literal(image.day.strftime('%B'))}
                 </li>
             % endif
         <li>
