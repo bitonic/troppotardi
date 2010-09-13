@@ -100,12 +100,23 @@ img {
     width:200px;
 }
 
-#author, #author_url, #textinput, #email {
+#author, #author_url, #textinput, #email, #recaptcha_response_field {
     margin-left:5px;
     border:none;
     background-color:#f0f0f0;
     height:20px;
     padding:0 5px 5px 6px;
+}
+
+#recaptcha_response_field {
+    width:300px;
+}
+
+#captcha_links {
+    width:300px;
+    margin-left:3px;
+    text-align:center;
+    font-size:0.9em;
 }
 
 #email {

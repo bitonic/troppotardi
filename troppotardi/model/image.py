@@ -150,7 +150,7 @@ class Image(mapping.Document):
         
         # Get the image with the futuremost day
         days = list(Image.by_day(db, descending=True, limit=1))
-        
+
         # If that day is before then today, or if there are no images at
         # all, schedule it for today
         if (days and (days[0].day < today)) or (not days):
@@ -160,7 +160,7 @@ class Image(mapping.Document):
             last_day = days[0].day
             self.day = datetime(last_day.year, last_day.month,
                                 last_day.day) + timedelta(days=1)
-            
+        
     def delete(self, db):
         # Puts the image in the 'deleted' state
         self.state = 'deleted'
