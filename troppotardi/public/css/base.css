@@ -202,3 +202,27 @@ img {
 p {
     text-indent:20px;
 }
+
+#joinus {
+    margin-top:16px;
+}
+
+#joinus_links {
+    text-align:center;
+    font-size:110%;
+    margin-top:15px;
+}
+
+#facebook {
+    color: #08529b;
+    margin-right:20px;
+}
+
+#feedlink {
+    color: #f57b32;
+    margin-right:20px;
+}
+
+#flickrlink {
+    color: #ff0088;
+}

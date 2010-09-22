@@ -6,6 +6,7 @@
     <title>troppo tardi</title> 
     <link href="/css/home.css" media="screen" rel="stylesheet" type="text/css" /> 
     ${h.google_analytics()}
+    <meta http-equiv="refresh" content="7; url=http://troppotardi.com/images/last">
 </head> 
 <body> 
     <a href="/images/last"> 
