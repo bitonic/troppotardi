@@ -6,7 +6,8 @@
 body {
     margin:3px 0 20px 0;
     color:#191919;
-    font-family:Consolas, Inconsolata, "Courier New", Courier, monospace;
+    /*font-family:Consolas, Inconsolata, "Courier New", Courier, monospace;*/
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 a, a:visited {
@@ -36,7 +37,11 @@ img {
 }
 
 #text a {
-    text-decoration:underline;
+    text-decoration:none;
+}
+
+#text a:hover {
+    color:#555555;
 }
 
 #prevnext {
@@ -72,7 +77,11 @@ img {
 }
 
 #fullsize a {
-    text-decoration:underline;
+    text-decoration:none;
+}
+
+#fullsize a:hover {
+    color: #555555;
 }
 
 #footer {
@@ -84,7 +93,11 @@ img {
 }
 
 #footer a {
-    text-decoration:underline;
+    text-decoration:none;
+}
+
+#footer a:hover {
+    color:#555555;
 }
 
 #submit-form li {
@@ -205,6 +218,12 @@ p {
 
 #joinus {
     margin-top:16px;
+}
+
+#joinus p {
+    margin:3px 0;
+    text-indent:0;
+    text-align:justify;
 }
 
 #joinus_links {

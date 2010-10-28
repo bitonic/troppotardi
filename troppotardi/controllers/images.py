@@ -91,3 +91,9 @@ class ImagesController(BaseController):
                                 descending=True))[0].day
 
         redirect(url(controller='images', action='show', day=day_to_str(day)))
+
+    def xml_list(self):
+        c.images = Image.by_day(self.db,
+                                descending=True,
+                                startkey=day_to_str(datetime.utcnow()))
+        return render('/images/xml_list.mako')        

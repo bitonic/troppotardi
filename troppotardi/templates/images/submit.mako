@@ -40,8 +40,8 @@ var RecaptchaOptions = {
 	<li id="recaptcha_widget" style="display:none">
 
 	    <div class="recaptcha_only_if_incorrect_sol" style="color:red">Incorrect please try again</div>
-	    <span class="recaptcha_only_if_image">Enter the words on the right:</span>
-	    <span class="recaptcha_only_if_audio">Enter the numbers you hear:</span>
+	    <span class="recaptcha_only_if_image">Type the two words on the right:</span>
+	    <span class="recaptcha_only_if_audio">Input the numbers you hear:</span>
 	    <div id="recaptcha_image" style="float:right"></div>
 	    
 	    <input type="text" id="recaptcha_response_field" name="recaptcha_response_field" />
