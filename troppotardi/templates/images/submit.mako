@@ -23,6 +23,7 @@ var RecaptchaOptions = {
 </%def>
 
 <div id="submit-form">
+    <!--<center>We are migrating servers, it will be possible to submit images again shortly.</center>-->
     ${h.form(h.url(controller="images", action="submit"), method="post", multipart=True)}
     <ul>
         <li><b>bold</b> = required field<br/></li>
@@ -51,7 +52,6 @@ var RecaptchaOptions = {
 		<span class="recaptcha_only_if_image"><a href="javascript:Recaptcha.switch_type('audio')">Audio</a></span>
 		<span class="recaptcha_only_if_audio"><a href="javascript:Recaptcha.switch_type('image')">Image</a></span>
 	    </div>
-	    <!--<div><a href="javascript:Recaptcha.showhelp()">Help</a>-->
 	</li>
 
 	<script type="text/javascript"
