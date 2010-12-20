@@ -22,4 +22,7 @@ ${parent.footer()} <br/>
 | <a href="${url(controller='admin', action='adduser')}">Add an user</a> |
 <a href="${url(controller='admin', action='users')}">Manage users</a>
 % endif
+% if session['user'].has_permission('list_authors'):
+| <a href="${url(controller='admin', action='authors')}">Authors</a>
+% endif
 </%def>

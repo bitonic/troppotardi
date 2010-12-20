@@ -202,3 +202,9 @@ class AdminController(BaseController):
         
         flash('User successfully edited.')
         redirect(url(controller='admin', action='edit_user', id=id))
+
+    @authorize('list_authors')
+    def authors(self):
+        c.images = Image.by_day(self.db)
+
+        return render('/admin/authors.mako')

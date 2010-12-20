@@ -66,4 +66,5 @@ class User(mapping.Document):
         'review_images': ['Admin', 'Reviewer'],
         'manage_users': ['Admin'],
         'delete_images': ['Admin'],
+        'list_authors': ['Admin', 'Reviewer']
         }
