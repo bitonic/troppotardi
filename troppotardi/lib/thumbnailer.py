@@ -28,7 +28,7 @@ def thumbnailer(filename, max_width=None, max_height=None, crop=False):
         # If the image is smaller then the max size, we don't touch it
         if not (width <= max_width and height <= max_height):
             if crop and max_width and max_height:
-                if width >= height:
+                if width / float(height) >= max_width / float(max_height):
                     thumb_height = max_height
                     thumb_width = width * max_height / height
                     sx = (thumb_width - max_width) / 2
