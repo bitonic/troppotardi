@@ -31,7 +31,7 @@ class ImageSize(formencode.FancyValidator):
         value.file.seek(0, 2)
         if value.file.tell() > int(pylons.config['images_max_size']):
             raise formencode.Invalid(
-                'Images must be smaller than 2MB',
+                'Images must be smaller than 3MB',
                 value, state)
         value.file.seek(0, 0)
 

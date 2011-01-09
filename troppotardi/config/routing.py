@@ -20,6 +20,7 @@ def make_map(config):
 
     # CUSTOM ROUTES HERE
     map.connect('index', '/', controller='pages', action='index', page='home')
+    map.connect('home', '/home', controller='pages', action='index', page='home')
     map.connect('months', '/months/{year}/{month}', controller='images', action='months')
     map.connect('show_image', '/image/{day}', controller='images', action='show')
     map.connect('last', '/images/last', controller='images', action='last')

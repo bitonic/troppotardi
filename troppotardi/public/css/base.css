@@ -30,10 +30,10 @@ a, a:visited {
 
 #container {
     position:relative;
-    width:690px;
+    width:890px;
     left:50%;
     padding:3px 5px 0 5px;
-    margin: 0 0 0 -350px;
+    margin: 0 0 0 -450px;
 }
 
 #image {
@@ -61,14 +61,18 @@ img {
     font-weight:bold;
     padding:0 10px;
     height:30px;
+    text-align:center;
+    font-weight:normal;
 }
 
 #previous {
     padding:0;
     float:left;
-    width:223px;
+    width:200px;
     height:10px;
     font-size:170%;
+    text-align:left;
+    font-weight:bold;
 }
 
 #next {
@@ -78,6 +82,7 @@ img {
     text-align:right;
     height:10px;
     font-size:170%;
+    font-weight:bold;
 }
 
 #fullsize {
@@ -86,7 +91,6 @@ img {
     width:200px;
     height:10px;
     text-align:center;
-    font-weight:normal;
 }
 
 #fullsize a {

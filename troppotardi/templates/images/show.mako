@@ -60,9 +60,7 @@ window.addEvent('domready', function() {
             <a href="${h.url(controller='images', action='show', day=c.newer)}">&larr;</a>
     % endif
     </div>
-    <div id="fullsize">
         <a href="${c.image.url}" alt="Fullsize image">Fullsize image</a>
-    </div>
     % if hasattr(c, 'older'):
         <div id="next">
             <a href="${h.url(controller='images', action='show', day=c.older)}">&rarr;</a>
@@ -74,9 +72,9 @@ window.addEvent('domready', function() {
 <div id="img_div">
     % if hasattr(c, 'older'):
         <a href="${h.url(controller='images', action='show', day=c.older)}">
-            <img src="${h.thumbnailer(c.image.filename, max_width=690, max_height=690)}" alt="${c.image.day}" id="image" />
+            <img src="${h.thumbnailer(c.image.filename, max_width=890, max_height=890)}" alt="${c.image.day}" id="image" />
         </a>
     % else:
-        <img src="${h.thumbnailer(c.image.filename, max_width=690, max_height=690)}" alt="${c.image.day}" id="image" />
+        <img src="${h.thumbnailer(c.image.filename, max_width=890, max_height=890)}" alt="${c.image.day}" id="image" />
     % endif
 </div>
