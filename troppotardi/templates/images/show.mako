@@ -10,9 +10,13 @@ window.addEvent('domready', function() {
     // Resizes the image if the screen height is not enough
     var image = $('image');
     image.addEvent('load', function() {
-        if (image.getSize().y + 20 > window.getSize().y && window.getSize().y > 450)
+        if (image.getSize().y + 50 > window.getSize().y)
         {
-            image_height = window.getSize().y - 20;
+            image_height = window.getSize().y - 50;
+
+            if (image_height < 450)
+                image_height = 450;
+
             old_image_width = image.getSize().x;
             image_width = image.width * image_height / image.getSize().y;
             image.setProperties({

@@ -210,6 +210,8 @@ img {
 
 #months ul {
     list-style-type: none;
+    margin:0 0 0 18px;
+    padding:0;
 }
 
 .month {
