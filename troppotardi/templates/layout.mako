@@ -9,7 +9,7 @@ ${next.body()}
 <a href="${h.url(controller='images', action='months')}">Archive</a> &middot;
 <!--<a href="${h.url(controller='pages', action='index', page='about')}">Join us</a> &middot;-->
 <a href="${h.url(controller='pages', action='index', page='joinus')}">Join us</a> &middot;
-<a href="http://bitbucket.org/rostayob/troppotardi/" target="_blank">Source</a> &middot;
+<a href="http://github.com/rostayob/troppotardi/" target="_blank">Source</a> &middot;
 <a href="${h.url('index')}">Home</a>
 </%def>
 
