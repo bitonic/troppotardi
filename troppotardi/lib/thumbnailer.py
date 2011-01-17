@@ -47,8 +47,8 @@ def thumbnailer(filename, max_width=None, max_height=None, crop=False):
                 im = im.crop((sx, up, dx, low))
             else:
                 if max_width and max_height:
-                    if width > height: max_height = None
-                    else: max_width = None
+                    if width > height: max_width = None
+                    else: max_height = None
                 
                 # Calculate the size...
                 if max_width and not max_height:
