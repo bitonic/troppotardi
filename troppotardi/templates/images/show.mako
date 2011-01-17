@@ -61,15 +61,15 @@ window.addEvent('domready', function() {
 % if hasattr(c, 'older') or hasattr(c, 'newer'):
     <div id="previous">
     % if hasattr(c, 'newer'):
-            <a href="${h.url(controller='images', action='show', day=c.newer)}">&larr;</a>
-    % endif
+        <a href="${h.url(controller='images', action='show', day=c.newer)}">&larr;</a>
+    % endif             
     </div>
         <a href="${c.image.url}" alt="Fullsize image">Fullsize image</a>
+    <div id="next">
     % if hasattr(c, 'older'):
-        <div id="next">
-            <a href="${h.url(controller='images', action='show', day=c.older)}">&rarr;</a>
-        </div>
+        <a href="${h.url(controller='images', action='show', day=c.older)}">&rarr;</a>
     % endif
+    </div>
 % endif
 </div>
 
