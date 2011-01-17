@@ -88,7 +88,7 @@ img {
     font-weight:normal;
     width:180px;
     float:right;
-    padding:10px;
+    padding:10px 10px 0 10px;
 }
 
 #previous, #next {
@@ -107,11 +107,7 @@ img {
 }
 
 #fullsize {
-    padding:5px 0 0 0;
-    float:left;
-    width:200px;
-    height:10px;
-    text-align:center;
+    font-size:80%;
 }
 
 #fullsize a {
