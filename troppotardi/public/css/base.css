@@ -158,10 +158,13 @@ img {
 }
 
 #captcha_links {
-    width:300px;
     margin-left:3px;
-    text-align:center;
+    text-align:left;
     font-size:0.9em;
+}
+
+#captcha_links a {
+    text-decoration:underline;
 }
 
 #email {
@@ -173,6 +176,7 @@ img {
 }
 
 #submit_button {
+    clear:both;
     text-align:center;
 }
 
