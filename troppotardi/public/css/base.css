@@ -67,7 +67,10 @@ img {
 /* Stuff for show.mako */
 #text {
     font-size:120%;
-    margin:8px 0 0 0;
+    margin:0;
+    width:180px;
+    float:right;
+    padding:0 10px;
 }
 
 #text a {
@@ -80,30 +83,27 @@ img {
 
 #prevnext {
     font-weight:bold;
-    padding:0 10px;
     height:30px;
     text-align:center;
     font-weight:normal;
+    width:180px;
+    float:right;
+    padding:10px;
+}
+
+#previous, #next {
+    padding:0;
+    font-size:170%;
+    font-weight:bold;
+    margin:-7px 0 0 0;
 }
 
 #previous {
-    padding:0;
     float:left;
-    width:200px;
-    height:10px;
-    font-size:170%;
-    text-align:left;
-    font-weight:bold;
 }
 
 #next {
-    padding:0;
     float:right;
-    width:200px;
-    text-align:right;
-    height:10px;
-    font-size:170%;
-    font-weight:bold;
 }
 
 #fullsize {
@@ -122,12 +122,11 @@ img {
     color: #555555;
 }
 
-#img_div {
-    text-align:center;
-}
-
 #image {
     margin:5px 0 0 0;
+    float:left;
+    text-align:center;
+    width:690px;
 }
 
 /* Stuff for submit.mako */
