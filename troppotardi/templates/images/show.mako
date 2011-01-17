@@ -46,7 +46,7 @@ window.addEvent('domready', function() {
 <div id="img_div">
     % if hasattr(c, 'older'):
         <a href="${h.url(controller='images', action='show', day=c.older)}" id="image">
-            <img src="${h.thumbnailer(c.image.filename, max_width=690, max_height=700)}" alt="${c.image.day}" />
+            <img src="${h.thumbnailer(c.image.filename, max_width=690, max_height=800)}" alt="${c.image.day}" />
         </a>
     % else:
         <img src="${h.thumbnailer(c.image.filename, max_width=690, max_height=800)}" alt="${c.image.day}" id="image" />

@@ -46,15 +46,22 @@ def thumbnailer(filename, max_width=None, max_height=None, crop=False):
                 im.thumbnail((thumb_width, thumb_height), Image.ANTIALIAS)
                 im = im.crop((sx, up, dx, low))
             else:
-                if max_width and max_height:
-                    if width > height: max_width = None
-                    else: max_height = None
+                if max_height:
+                    new_width = width * max_height / height
+                if max_width:
+                    new_height = max_height = height * max_width / width
+
+                if max_height and max_width:
+                    if new_width > max_width:
+                        max_height = None
+                    else:
+                        max_width = None
                 
                 # Calculate the size...
                 if max_width and not max_height:
-                    max_height = height * max_width / width
+                    max_height = new_height
                 elif max_height and not max_width:
-                    max_width = width * max_height / height
+                    max_width = new_width
                 
                 im.thumbnail((max_width, max_height), Image.ANTIALIAS)
 
