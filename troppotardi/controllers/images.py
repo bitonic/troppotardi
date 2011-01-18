@@ -1,5 +1,6 @@
 import logging
 from datetime import datetime
+from StringIO import StringIO
 
 from pylons import request, response, session, tmpl_context as c, url, config
 from pylons.controllers.util import abort, redirect
@@ -11,6 +12,7 @@ from couchdb.mapping import DateTimeField
 from troppotardi.lib.base import BaseController, render
 from troppotardi.lib import return_to
 from troppotardi.lib.helpers import flash
+from troppotardi.lib.thumbnailer import resize_image
 from troppotardi.model.forms import ImageSubmit
 from troppotardi.model import Image
 from troppotardi.lib.mapping import day_to_str, str_to_day
@@ -91,6 +93,37 @@ class ImagesController(BaseController):
                                 descending=True))[0].day
 
         redirect(url(controller='images', action='show', day=day_to_str(day)))
+
+    def display_thumb(self):
+        get_params = request.GET
+
+        if not 'image' in get_params:
+            abort(500)
+        if not ('max_width' in get_params or 'max_height' in get_params):
+            abort(500)
+            
+        if 'max_width' in get_params:
+            max_width = int(get_params['max_width'])
+        else:
+            max_width = None
+
+        if 'max_height' in get_params:
+            max_height = int(get_params['max_height'])
+        else:
+            max_height = None
+
+        im = resize_image(get_params['image'],
+                          max_width=max_width,
+                          max_height=max_height,
+                          )
+        
+        response.content_type = 'image/' + im.format.lower()
+
+        buffer = StringIO()
+        
+        im.save(buffer, im.format.upper())
+
+        return buffer.getvalue()
 
     def xml_list(self):
         c.images = Image.by_day(self.db,

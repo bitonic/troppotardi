@@ -32,9 +32,8 @@ a, a:visited {
 #container {
     position:relative;
     width:890px;
-    left:50%;
     padding:3px 5px 0 5px;
-    margin: 0 0 0 -450px;
+    float:right;
 }
 
 img {
@@ -42,12 +41,13 @@ img {
 }
 
 #footer {
-    text-align:center;
+    text-align:right;
     font-size:15px;
     margin:0;
     font-size:90%;
     height: 18px;
-    padding:8px 0;
+    padding:8px 15px;
+    clear:both;
 }
 
 #push {
@@ -121,8 +121,30 @@ img {
 #image {
     margin:5px 0 0 0;
     float:left;
-    text-align:center;
+    text-align:right;
     width:690px;
+}
+
+#image ul {
+    margin:0;
+    padding:0;
+    height:16px;
+    list-style:none;
+    z-index:2;
+}
+
+#image li {
+    display:inline;
+    width:16px;
+    height:16px;
+    float:right;
+    margin:0;
+    padding:0;
+}
+
+#image li a {
+    margin:0;
+    float:none;
 }
 
 /* Stuff for submit.mako */

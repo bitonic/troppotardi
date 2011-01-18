@@ -4,9 +4,10 @@
 
 <%def name="head()">
 ${parent.head()}
-<script type="text/javascript" src="/js/mootools-1.2.4-core-yc.js"></script>
-<script type="text/javascript" src="/js/FullScreenImage.js"></script>
+<script type="text/javascript" src="/js/mootools-core-1.3-full-compat-yc.js"></script>
 <script type="text/javascript">
+maximized = false;
+
 window.addEvent('domready', function() {
     // Resizes the image if the screen height is not enough
     var image = $$('#image img')[0];
@@ -41,24 +42,51 @@ window.addEvent('domready', function() {
         % endif
     });
 
-    /*
-    // Full screen
-    $('image').set('href', 'javascript:void(0)');
-    var fullScreenPanel = new FullScreenImage($('image'), {swf:'/js/FullScreenImage.swf'});
-    fullScreenPanel.show("${c.image.url}");
-    */
+    // Adds the maximize stuff
+    var image_links = $$('#image ul')[0];
+    var width = window.getSize().x - 200;
+    var url = '${url(controller='images', action='display_thumb', image=c.image.filename)}';
+    url += '&max_width=' + (width - 30);
+    
+    // Preload
+    var big_img = new Image();
+    big_img.src = url;
+
+    big_img.addEvent('load', function(event) {
+        if (big_img.width > 690) {
+            image_links.innerHTML += '<li><a href="javascript:toggle_maximize(\'' + url + '\', ' + width +')"><img src="/layout_images/maximize.png" alt="Maximize" /></a></li>';
+        }
+    });
 });
+
+function toggle_maximize(url, width) {
+    if (maximized) {
+        $('image_show').src = '${h.thumbnailer(c.image.filename, max_width=690, max_height=800)}';
+    } else {
+        $('image_show').src = url;
+        $('image').setStyle('width', width + 'px');
+        $('container').setStyle('width', (width + 200) + 'px');
+    }
+    maximized = !maximized;
+}
 </script>
 </%def>
 
 <div id="img_div">
-    % if hasattr(c, 'older'):
-        <a href="${h.url(controller='images', action='show', day=c.older)}" id="image">
-            <img src="${h.thumbnailer(c.image.filename, max_width=690, max_height=800)}" alt="${c.image.day}" />
-        </a>
-    % else:
-        <img src="${h.thumbnailer(c.image.filename, max_width=690, max_height=800)}" alt="${c.image.day}" id="image" />
-    % endif
+    <div id="image">
+        <ul>
+            <li><a href="${c.image.url}" target="_blank"><img src="/layout_images/save.png" alt="Save image" /></a></li>
+        </ul>
+        % if hasattr(c, 'older'):
+            <a href="${h.url(controller='images', action='show', day=c.older)}">
+                <img src="${h.thumbnailer(c.image.filename, max_width=690, max_height=800)}" alt="${c.image.day}" id="image_show" />
+            </a>
+        % else:
+            <a href="#">
+                <img src="${h.thumbnailer(c.image.filename, max_width=690, max_height=800)}" alt="${c.image.day}" id="image_show" />
+            </a>
+        % endif
+    </div>
 
     <div id="prevnext">
     % if hasattr(c, 'older') or hasattr(c, 'newer'):
