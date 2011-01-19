@@ -9,9 +9,22 @@ ${parent.head()}
 <script type="text/javascript">
 var maximized = false;
 var main_image;
+var big_image;
+var image_size = undefined;
+var big_image_size;
 
 window.addEvent('domready', function() {
     main_image = $('main_image');
+
+    // Resizing
+    main_image.addEvent('load', function() {
+        if (image_size == undefined) {
+            image_size = main_image.getSize();
+        }
+        resize_image();
+
+        window.addEvent('resize', resize_image);
+    });
 
     // Adds arrows control
     window.addEvent('keydown', function(event){
@@ -33,30 +46,36 @@ window.addEvent('domready', function() {
     var url = '${url(controller='images', action='display_thumb', image=c.image.filename)}';
     url += '&max_width=' + (width - 40);
 
-    var maximize_image = new Element('li');
-    maximize_image.grab(
-        new Element('img', {
-            src: '/layout_images/maximize.png',
-            alt: 'Maximize',
-            styles: {
-                cursor: 'pointer',
-            },
-            events: {
-                click: function() {toggle_maximize(url, width)},
-            }
-        }));
-
-    image_links.grab(maximize_image);
-
     // If the image is not bigger than the layout, remove the maximize button
-    var big_img = new Element('img', {src: url});
-    big_img.addEvent('load', function(event) {
-        if (big_img.width <= 690)
-            maximize_image.setStyle('display', 'none');
+    big_image = new Element('img', {src: url});
+    big_image.addEvent('load', function(event) {
+        if (big_image.width > 690) {
+            // Store the image size
+            big_image_size = {
+                x: big_image.width,
+                y: big_image.height,
+            };
+
+            // Inject the element
+            var maximize_image = new Element('li');
+            maximize_image.grab(
+                new Element('img', {
+                    src: '/layout_images/maximize.png',
+                    alt: 'Maximize',
+                    styles: {
+                        cursor: 'pointer',
+                    },
+                    events: {
+                        click: function() {toggle_maximize(url)},
+                    }
+                }));
+            
+            image_links.grab(maximize_image);
+        }
     });
 });
 
-function toggle_maximize(url, width) {
+function toggle_maximize(url) {
     if (maximized)
         main_image.set(
             'src', 
@@ -65,6 +84,34 @@ function toggle_maximize(url, width) {
         main_image.set('src', url);
 
     maximized = !maximized;
+
+    resize_image();
+}
+
+function resize_image() {
+    if (maximized) {
+        main_image.setProperties({
+            height: big_image_size.y,
+            width: big_image_size.x,
+        });
+    } else {
+        var window_height = window.getSize().y;
+        var margin = 70;
+        if (image_size.y + margin > window_height)
+        {
+            image_height = window_height - margin;
+            
+            if (image_height < 450)
+                image_height = 450;
+            
+            image_width = image_size.x * image_height / image_size.y;
+            main_image.setProperties({
+                height: image_height,
+                width: image_width,
+            });
+        }
+    }
+
 }
 </script>
 </%def>
