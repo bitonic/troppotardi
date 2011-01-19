@@ -4,6 +4,7 @@
 
 <%def name="head()">
 ${parent.head()}
+<link href="/css/show.css" media="screen" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="/js/mootools-core-1.3-full-compat-yc.js"></script>
 <script type="text/javascript">
 maximized = false;
@@ -15,7 +16,7 @@ window.addEvent('domready', function() {
         if (image.getSize().y + 20 > window.getSize().y)
         {
             image_height = window.getSize().y - 20;
-
+            
             if (image_height < 450)
                 image_height = 450;
 
@@ -46,15 +47,17 @@ window.addEvent('domready', function() {
     var image_links = $$('#image ul')[0];
     var width = window.getSize().x - 200;
     var url = '${url(controller='images', action='display_thumb', image=c.image.filename)}';
-    url += '&max_width=' + (width - 30);
+    url += '&max_width=' + (width - 40);
     
-    // Preload
+    image_links_pre = image_links.innerHTML;
+    image_links.innerHTML += '<li><a href="javascript:toggle_maximize(\'' + url + '\', ' + width +')"><img src="/layout_images/maximize.png" alt="Maximize" /></a></li>';
+
+    // If the image is not bigger than the layout, remove the maximize button
     var big_img = new Image();
     big_img.src = url;
-
     big_img.addEvent('load', function(event) {
-        if (big_img.width > 690) {
-            image_links.innerHTML += '<li><a href="javascript:toggle_maximize(\'' + url + '\', ' + width +')"><img src="/layout_images/maximize.png" alt="Maximize" /></a></li>';
+        if (big_img.width <= 690) {
+            image_links.innerHTML = image_links_pre;
         }
     });
 });
@@ -72,22 +75,8 @@ function toggle_maximize(url, width) {
 </script>
 </%def>
 
-<div id="img_div">
-    <div id="image">
-        <ul>
-            <li><a href="${c.image.url}" target="_blank"><img src="/layout_images/save.png" alt="Save image" /></a></li>
-        </ul>
-        % if hasattr(c, 'older'):
-            <a href="${h.url(controller='images', action='show', day=c.older)}">
-                <img src="${h.thumbnailer(c.image.filename, max_width=690, max_height=800)}" alt="${c.image.day}" id="image_show" />
-            </a>
-        % else:
-            <a href="#">
-                <img src="${h.thumbnailer(c.image.filename, max_width=690, max_height=800)}" alt="${c.image.day}" id="image_show" />
-            </a>
-        % endif
-    </div>
 
+<div id="right_col">
     <div id="prevnext">
     % if hasattr(c, 'older') or hasattr(c, 'newer'):
         % if hasattr(c, 'newer'):
@@ -113,3 +102,16 @@ function toggle_maximize(url, width) {
         % endif
     </div>
 </div>
+
+<ul id="resize_maximize">
+    <li><a href="${c.image.url}" target="_blank"><img src="/layout_images/save.png" alt="Save image" /></a></li>
+</ul>
+% if hasattr(c, 'older'):
+    <a href="${h.url(controller='images', action='show', day=c.older)}">
+        <img src="${h.thumbnailer(c.image.filename, max_width=690, max_height=800)}" alt="${c.image.day}" id="image" />
+    </a>
+% else:
+    <a href="#">
+        <img src="${h.thumbnailer(c.image.filename, max_width=690, max_height=800)}" alt="${c.image.day}" id="image" />
+    </a>
+% endif

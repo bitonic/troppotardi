@@ -1,0 +1,84 @@
+/* Override the base.css container width and text-align */
+#container {
+    width:100%;
+    text-align:right;
+}
+
+#right_col {
+    width:200px;
+    padding:0;
+    margin:0;
+    float:right;
+    text-align:left;
+}
+#text {
+    font-size:120%;
+    margin:0;
+    padding:0 10px;
+}
+
+#text a {
+    text-decoration:none;
+}
+
+
+#prevnext {
+    font-weight:bold;
+    height:30px;
+    text-align:center;
+    font-weight:normal;
+    padding:10px 10px 0 10px;
+}
+
+#previous, #next {
+    padding:0;
+    font-size:170%;
+    font-weight:bold;
+    margin:-7px 0 0 0;
+}
+
+#previous {
+    float:left;
+}
+
+#next {
+    float:right;
+}
+
+#fullsize {
+    font-size:80%;
+}
+
+#fullsize a {
+    text-decoration:none;
+}
+
+#fullsize a:hover {
+    color: #555555;
+}
+
+#resize_maximize {
+    margin:5px 0 0 0;
+    padding:0;
+    height:16px;
+    list-style:none;
+    z-index:2;
+}
+
+#resize_maximize li {
+    display:inline;
+    width:16px;
+    height:16px;
+    float:right;
+    margin:0;
+    padding:0;
+}
+
+#resize_maximize li a {
+    margin:0;
+    float:none;
+}
+
+#image {
+    margin:3px 0 0 0;
+}

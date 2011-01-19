@@ -12,11 +12,7 @@ body {
     color:#191919;
     font-family: Arial, Helvetica, sans-serif;
     height:100%;
-}
-
-a, a:visited {
-    color:#191919;
-    text-decoration:none;
+    padding:0;
 }
 
 /* Base layout */
@@ -27,13 +23,23 @@ a, a:visited {
     height: 100%;
     margin: 0 auto -34px;
     padding:0;
+    border-right:10px solid black;
 }
 
 #container {
     position:relative;
     width:890px;
-    padding:3px 5px 0 5px;
+    padding:0 5px 0 0;
     float:right;
+}
+
+#container a, #container a:visited {
+    color:#191919;
+    text-decoration:none;
+}
+
+#container a:hover {
+    color:#555555;
 }
 
 img {
@@ -48,6 +54,7 @@ img {
     height: 18px;
     padding:8px 15px;
     clear:both;
+    background-color:black;
 }
 
 #push {
@@ -56,96 +63,16 @@ img {
     clear:both;
 }
 
-#footer a {
+#footer a, #footer a:visited {
     text-decoration:none;
+    color:#989898;
 }
 
 #footer a:hover {
-    color:#555555;
+    color:#d2d2d2;
 }
 
-/* Stuff for show.mako */
-#text {
-    font-size:120%;
-    margin:0;
-    width:180px;
-    float:right;
-    padding:0 10px;
-}
-
-#text a {
-    text-decoration:none;
-}
-
-#text a:hover {
-    color:#555555;
-}
-
-#prevnext {
-    font-weight:bold;
-    height:30px;
-    text-align:center;
-    font-weight:normal;
-    width:180px;
-    float:right;
-    padding:10px 10px 0 10px;
-}
-
-#previous, #next {
-    padding:0;
-    font-size:170%;
-    font-weight:bold;
-    margin:-7px 0 0 0;
-}
-
-#previous {
-    float:left;
-}
-
-#next {
-    float:right;
-}
-
-#fullsize {
-    font-size:80%;
-}
-
-#fullsize a {
-    text-decoration:none;
-}
-
-#fullsize a:hover {
-    color: #555555;
-}
-
-#image {
-    margin:5px 0 0 0;
-    float:left;
-    text-align:right;
-    width:690px;
-}
-
-#image ul {
-    margin:0;
-    padding:0;
-    height:16px;
-    list-style:none;
-    z-index:2;
-}
-
-#image li {
-    display:inline;
-    width:16px;
-    height:16px;
-    float:right;
-    margin:0;
-    padding:0;
-}
-
-#image li a {
-    margin:0;
-    float:none;
-}
+/* The stuff for show.mako is in the show.css file. */
 
 /* Stuff for submit.mako */
 
@@ -212,7 +139,8 @@ img {
 /* Stuff for months.mako */
 
 #months {
-    padding-bottom: 10px;
+    width:872px;
+    float:right;
 }
 
 #months img {
@@ -264,6 +192,7 @@ p {
 
 #joinus {
     margin-top:16px;
+    text-align:right;
 }
 
 #joinus p {
@@ -278,16 +207,16 @@ p {
     margin-top:15px;
 }
 
-#facebook {
+#facebook, #facebook:visited {
     color: #08529b;
     margin-right:20px;
 }
 
-#feedlink {
+#feedlink, #feedlink:visited {
     color: #f57b32;
     margin-right:20px;
 }
 
-#flickrlink {
+#flickrlink, #flickrlink:visited {
     color: #ff0088;
 }
