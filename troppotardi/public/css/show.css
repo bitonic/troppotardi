@@ -70,10 +70,12 @@
 }
 
 #resize_maximize {
-    margin:5px 0 0 0;
+    margin:2px 0 0 -18px;
     padding:0;
-    height:16px;
     list-style:none;
+    float:right;
+    width:16px;
+    position:relative;
     z-index:2;
 }
 
@@ -92,5 +94,7 @@
 }
 
 #main_image {
-    margin:0;
+    margin:0 0 0 0;
+    position:relative;
+    z-index:1;
 }

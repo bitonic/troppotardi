@@ -141,14 +141,6 @@ function resize_image() {
   </div>
 </div>
 
-<ul id="resize_maximize">
-  <li>
-    <a href="${c.image.url}" target="_blank">
-      <img src="/layout_images/save.png" alt="Save image" />
-    </a>
-  </li>
-</ul>
-
 <%
 image = h.thumbnailer(c.image.filename, max_width=690, max_height=700)
 %>
@@ -162,3 +154,11 @@ image = h.thumbnailer(c.image.filename, max_width=690, max_height=700)
       <img src="${image}" alt="${c.image.day.strftime('%Y-%m-%d')}" id="main_image" />
     </a>
 % endif
+
+<ul id="resize_maximize">
+  <li>
+    <a href="${c.image.url}" target="_blank">
+      <img src="/layout_images/save.png" alt="Save image" />
+    </a>
+  </li>
+</ul>

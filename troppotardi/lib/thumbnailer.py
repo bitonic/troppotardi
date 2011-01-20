@@ -51,7 +51,7 @@ def resize_image(filename, max_width=None, max_height=None, crop=False):
     
     return im
 
-def thumbnailer(filename, max_width=None, max_height=None, crop=False, save=True):
+def thumbnailer(filename, max_width=None, max_height=None, crop=False):
     """Given the filename of an image in the image dir,
     it thumbnails it and stores it in the thumbnails directory
     (both directories are defined in the ini file).
