@@ -37,8 +37,10 @@ class ImagesController(BaseController):
             
             # If there is one store it
             if len(olders) > 1:
-                c.older = day_to_str(olders[1].day)
-            
+                c.older = url(controller='images',
+                              action='show',
+                              day=day_to_str(olders[1].day),
+                              qualified=True)
 
             # Same thing, but the list is in ascending order for the
             # newer images
@@ -48,8 +50,11 @@ class ImagesController(BaseController):
 
             # We check that the newer image is not in a future date
             if (len(newers) > 1) and (datetime.utcnow() >= newers[1].day):
-                c.newer = day_to_str(newers[1].day)
-            
+                c.newer = url(controller='images',
+                              action='show',
+                              day=day_to_str(newers[1].day),
+                              qualified=True)
+
             session['return_to'] = url(controller='images', action='show', day=day)
             
             return render('/images/show.mako')

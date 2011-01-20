@@ -28,12 +28,12 @@ window.addEvent('domready', function() {
     window.addEvent('keydown', function(event){
         % if hasattr(c, 'newer'):
             if (event.key == 'left') {
-                window.location = "${h.url(controller='images', action='show', day=c.newer, qualified=True)}";
+                window.location = "${c.newer}";
             }
         % endif
         % if hasattr(c, 'older'):
             if (event.key == 'right') {
-                window.location = "${h.url(controller='images', action='show', day=c.older, qualified=True)}";
+                window.location = "${c.older}";
             }
         % endif
     });
@@ -103,12 +103,12 @@ function resize_image() {
   <div id="prevnext">
     % if hasattr(c, 'older') or hasattr(c, 'newer'):
         % if hasattr(c, 'newer'):
-            <a href="${h.url(controller='images', action='show', day=c.newer)}" id="previous">
+            <a href="${c.newer}" id="previous">
               &larr;
             </a>
         % endif             
         % if hasattr(c, 'older'):
-            <a href="${h.url(controller='images', action='show', day=c.older)}" id="next">
+            <a href="${c.older}" id="next">
               &rarr;
             </a>
         % endif
@@ -139,12 +139,16 @@ function resize_image() {
   </li>
 </ul>
 
+<%
+image = h.thumbnailer(c.image.filename, max_width=690, max_height=700)
+%>
+
 % if hasattr(c, 'older'):
-    <a href="${h.url(controller='images', action='show', day=c.older)}">
-      <img src="${h.thumbnailer(c.image.filename, max_width=690, max_height=700)}" alt="${c.image.day.strftime('%Y-%m-%d')}" id="main_image" />
+    <a href="${c.older}">
+      <img src="${image}" alt="${c.image.day.strftime('%Y-%m-%d')}" id="main_image" />
     </a>
 % else:
     <a href="#">
-      <img src="${h.thumbnailer(c.image.filename, max_width=690, max_height=700)}" alt="${c.image.day.strftime('%Y-%m-%d')}" id="main_image" />
+      <img src="${image}" alt="${c.image.day.strftime('%Y-%m-%d')}" id="main_image" />
     </a>
 % endif
