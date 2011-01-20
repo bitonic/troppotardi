@@ -6,6 +6,7 @@
 ${parent.head()}
 <link href="/css/show.css" media="screen" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="/js/mootools-core-1.3-full-compat-yc.js"></script>
+<script type="text/javascript" src="/js/mootools-more.js"></script>
 <script type="text/javascript">
 var maximized = false;
 var main_image;
@@ -15,24 +16,27 @@ window.addEvent('domready', function() {
     main_image = $('main_image');
 
     // Resizing
-    main_image.addEvent('load', function() {
-        if (image_size == undefined)
-            image_size = main_image.getSize();
-
-        resize_image();
-
-        window.addEvent('resize', resize_image);
+    Asset.image(main_image.src, {
+        onLoad: function() {
+            if (image_size == undefined) {
+                image_size = main_image.getSize();
+            }
+            
+            resize_image();
+            
+            window.addEvent('resize', resize_image);            
+        }
     });
 
     // Adds arrows control
     window.addEvent('keydown', function(event){
         % if hasattr(c, 'newer'):
-            if (event.key == 'left') {
+            if (event.key == 'left' || event.key == 'k') {
                 window.location = "${c.newer}";
             }
         % endif
         % if hasattr(c, 'older'):
-            if (event.key == 'right') {
+            if (event.key == 'right' || event.key == 'j') {
                 window.location = "${c.older}";
             }
         % endif
@@ -88,6 +92,12 @@ function resize_image() {
                 image_height = 450;
             
             image_width = image_size.x * image_height / image_size.y;
+            
+            if (image_width > image_size.x || image_height > image_size.y) {
+                image_width = image_size.x;
+                image_height = image_size.y;
+            }
+
             main_image.setProperties({
                 height: image_height,
                 width: image_width,

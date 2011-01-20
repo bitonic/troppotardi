@@ -25,7 +25,7 @@ a {
 
 #container {
     position:relative;
-    width:890px;
+    width:700px;
     padding:5px 20px 37px 0;
     float:right;
     text-align:center;
@@ -64,6 +64,7 @@ img {
 
 #submit-form {
     text-align:left;
+    float:right;
 }
 
 #submit-form a, #submit-form a:visited {
@@ -187,7 +188,6 @@ p {
 
 #joinus {
     margin-top:0;
-    width:500px;
     float:right;
 }
 
