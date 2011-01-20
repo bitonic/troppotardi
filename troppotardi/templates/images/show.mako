@@ -46,7 +46,7 @@ window.addEvent('domready', function() {
     var image_links = $('resize_maximize');
     var width = window.getSize().x - $('right_col').getSize().x;
     var url = '${url(controller='images', action='display_thumb', image=c.image.filename)}';
-    url += '&max_width=' + (width - 40);
+    url += '&max_width=' + (width - 20);
 
     // Inject the element
     var maximize_image = new Element('li');
@@ -83,7 +83,7 @@ function resize_image() {
         main_image.removeProperties('width', 'height');
     } else {
         var window_height = window.getSize().y;
-        var margin = 70;
+        var margin = 50;
         if (image_size.y + margin > window_height)
         {
             image_height = window_height - margin;
