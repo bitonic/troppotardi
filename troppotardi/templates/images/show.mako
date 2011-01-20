@@ -9,18 +9,16 @@ ${parent.head()}
 <script type="text/javascript">
 var maximized = false;
 var main_image;
-var big_image;
 var image_size = undefined;
-var big_image_size;
 
 window.addEvent('domready', function() {
     main_image = $('main_image');
 
     // Resizing
     main_image.addEvent('load', function() {
-        if (image_size == undefined) {
+        if (image_size == undefined)
             image_size = main_image.getSize();
-        }
+
         resize_image();
 
         window.addEvent('resize', resize_image);
@@ -46,33 +44,21 @@ window.addEvent('domready', function() {
     var url = '${url(controller='images', action='display_thumb', image=c.image.filename)}';
     url += '&max_width=' + (width - 40);
 
-    // If the image is not bigger than the layout, remove the maximize button
-    big_image = new Element('img', {src: url});
-    big_image.addEvent('load', function(event) {
-        if (big_image.width > 690) {
-            // Store the image size
-            big_image_size = {
-                x: big_image.width,
-                y: big_image.height,
-            };
-
-            // Inject the element
-            var maximize_image = new Element('li');
-            maximize_image.grab(
-                new Element('img', {
-                    src: '/layout_images/maximize.png',
-                    alt: 'Maximize',
-                    styles: {
-                        cursor: 'pointer',
-                    },
-                    events: {
-                        click: function() {toggle_maximize(url)},
-                    }
-                }));
-            
-            image_links.grab(maximize_image);
-        }
-    });
+    // Inject the element
+    var maximize_image = new Element('li');
+    maximize_image.grab(
+        new Element('img', {
+            src: '/layout_images/maximize.png',
+            alt: 'Maximize',
+            styles: {
+                cursor: 'pointer',
+            },
+            events: {
+                click: function() {toggle_maximize(url)},
+            }
+        }));
+    
+    image_links.grab(maximize_image);
 });
 
 function toggle_maximize(url) {
@@ -90,10 +76,7 @@ function toggle_maximize(url) {
 
 function resize_image() {
     if (maximized) {
-        main_image.setProperties({
-            height: big_image_size.y,
-            width: big_image_size.x,
-        });
+        main_image.removeProperties('width', 'height');
     } else {
         var window_height = window.getSize().y;
         var margin = 70;
@@ -111,7 +94,6 @@ function resize_image() {
             });
         }
     }
-
 }
 </script>
 </%def>
