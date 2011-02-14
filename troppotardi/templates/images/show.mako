@@ -5,8 +5,8 @@
 <%def name="head()">
 ${parent.head()}
 <link href="/css/show.css" media="screen" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="/js/mootools-core-1.3-full-compat-yc.js"></script>
-<script type="text/javascript" src="/js/mootools-more.js"></script>
+<script type="text/javascript" src="http://mazzo.li/jslibs/mootools-1.3-yc.js"></script>
+<script type="text/javascript" src="http://mazzo.li/jslibs/mootools-more-1.3-yc.js"></script>
 <script type="text/javascript">
 var maximized = false;
 var main_image;
