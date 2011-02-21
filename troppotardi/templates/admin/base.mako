@@ -15,9 +15,11 @@ Logged in as ${session['user'].username}.
 <a href="${h.url(controller='users', action='logout')}">Logout</a> |
 <a href="${h.url(controller='users', action='cp')}">User CP</a>
 ${parent.footer()} <br/>
+% if session['user'].has_permission('review_images'):
 <a href="${url(controller='admin', action='pending')}">Review pending images</a> | 
 <a href="${url(controller='admin', action='accepted')}">Review accepted images</a> |
 <a href="${url(controller='admin', action='deleted')}">Review deleted images</a>
+% endif
 % if session['user'].has_permission('manage_users'):
 | <a href="${url(controller='admin', action='adduser')}">Add an user</a> |
 <a href="${url(controller='admin', action='users')}">Manage users</a>

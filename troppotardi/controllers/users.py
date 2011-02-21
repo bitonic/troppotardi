@@ -53,6 +53,9 @@ class UsersController(BaseController):
         flash('Login successful')
 
         if 'redirect_to' in session:
-            redirect(session['redirect_to'])
+            redir_url = session['redirect_to']
+            del session['redirect_to']
+            session.save()
+            redirect(redir_url)
         else:
             redirect(url('home'))

@@ -3,7 +3,7 @@ import logging
 from datetime import datetime
 from copy import deepcopy
 
-from pylons import request, response, tmpl_context as c, url
+from pylons import session, request, response, tmpl_context as c, url
 from pylons.controllers.util import abort, redirect
 from pylons.decorators.rest import restrict, dispatch_on
 from pylons.decorators import validate
@@ -19,6 +19,9 @@ from troppotardi.lib.mapping import day_to_str
 class AdminController(BaseController):
 
     def index(self):
+        if 'user' in session and not session['user'].has_permission('review_images'):
+            redirect(url(controller='admin', action='authors'))
+
         redirect(url(controller='admin', action='pending'))
 
     @authorize('review_images')
