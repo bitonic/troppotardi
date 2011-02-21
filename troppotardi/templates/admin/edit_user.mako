@@ -12,3 +12,4 @@ Password: ${h.password("password")}</br>
 Confirm password: ${h.password("confirm_password")}<br/><br/>
 ${h.submit('submit', 'Submit')}
 ${h.end_form()}
+<a href="${h.url(controller='admin', action='delete_user', id=c.user.id)}">Delete user</a>

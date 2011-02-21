@@ -203,6 +203,14 @@ class AdminController(BaseController):
         flash('User successfully edited.')
         redirect(url(controller='admin', action='edit_user', id=id))
 
+    @authorize('manage_users')
+    def delete_user(self, id):
+        User.load(self.db, id).delete(self.db)
+
+        flash('User deleted.')
+
+        redirect(url(controller='admin', action='users'))
+        
     @authorize('list_authors')
     def authors(self):
         c.images = Image.by_day(self.db)

@@ -61,8 +61,8 @@ def send_email(body, subject, recipients, sender=None):
 
     server = smtplib.SMTP_SSL(config['smtp_server'], config['smtp_port'])
     server.login(config['smtp_username'], config['smtp_password'])
-
     server.sendmail(sender, recipients, msg.as_string())
+    
     server.quit()
 
 def visitor_ip():

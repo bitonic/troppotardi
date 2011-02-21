@@ -28,6 +28,9 @@ class User(mapping.Document):
     def has_permission(self, permission):
         return (permission == 'logged_in') or (self.role in User.permissions[permission])
 
+    def delete(self, db):
+        db.delete(self)
+
     def store(self, db, revised_by=None):
         if not self.created:
             self.created = datetime.utcnow()
@@ -38,11 +41,11 @@ class User(mapping.Document):
         super(User, self).store(db)
 
         # Updates the user object in the session
-        if 'user' in pylons.session:
-            if not pylons.session['user']:
-                del pylons.session['user']
+        if 'user' in session:
+            if not session['user']:
+                del session['user']
             else:
-                pylons.session['user'] = User.load(self.db, pylons.session['user'].id)
+                session['user'] = User.load(db, session['user'].id)
 
         return self
     
@@ -61,10 +64,10 @@ class User(mapping.Document):
         }''')
 
     # The roles should be in order of "powerfulness"
-    roles = ['Admin', 'Reviewer']
+    roles = ['Admin', 'Reviewer', 'Collaborator']
     permissions = {
         'review_images': ['Admin', 'Reviewer'],
         'manage_users': ['Admin'],
         'delete_images': ['Admin'],
-        'list_authors': ['Admin', 'Reviewer']
+        'list_authors': ['Admin', 'Reviewer', 'Collaborator']
         }
