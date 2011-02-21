@@ -7,9 +7,13 @@
 % if c.images:
     <% images = list(c.images) %>
     % for image in images:
-        ${image.author}
-        % if image.author:
-            - ${image.author_email}
+        % if image.author_url:
+            <a href="${image.author_url}">${image.author}</a>
+        % else:
+            ${image.author}
+        % endif
+        % if image.author_email:
+            - <a href="mailto:${image.author_email}">${image.author_email}</a>
         % endif
         <br/>
     % endfor
