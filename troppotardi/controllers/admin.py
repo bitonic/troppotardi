@@ -213,9 +213,9 @@ class AdminController(BaseController):
         flash('User deleted.')
 
         redirect(url(controller='admin', action='users'))
-        
+
     @authorize('list_authors')
     def authors(self):
         c.images = Image.by_day(self.db)
-
+        
         return render('/admin/authors.mako')
