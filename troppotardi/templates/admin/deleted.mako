@@ -62,4 +62,5 @@ function uncheckAll() {
     ${h.end_form()}
 % else:
     <p>No images to display.</p>
+
 % endif
