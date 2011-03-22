@@ -9,7 +9,7 @@
     <meta http-equiv="refresh" content="7; url=http://troppotardi.com/images/last">
 </head> 
 <body> 
-    <a href="/images/last"> 
+    <a href="${h.url(controller='images', action='last')}"> 
         <img src="/layout_images/logo.png" alt="troppotardi" /> 
     </a>
 </body> 
