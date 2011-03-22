@@ -5,7 +5,7 @@ ${next.body()}
 <%def name="title()">${parent.title()}</%def>
 
 <%def name="footer()">
-<a href="${h.url(controller='images', action='submit')}" class="submitlink">Submit Image</a> &middot;
+<a href="${h.url(controller='images', action='submit')}" class="submitlink">Submit photo</a> &middot;
 <a href="${h.url(controller='images', action='months')}">Archive</a> &middot;
 <!--<a href="${h.url(controller='pages', action='index', page='about')}">Join us</a> &middot;-->
 <a href="${h.url(controller='pages', action='index', page='joinus')}">Join us</a> &middot;

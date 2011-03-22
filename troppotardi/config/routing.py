@@ -22,10 +22,14 @@ def make_map(config):
     map.connect('index', '/', controller='pages', action='index', page='home')
     map.connect('home', '/home', controller='pages', action='index', page='home')
     map.connect('months', '/months/{year}/{month}', controller='images', action='months')
-    map.connect('show_image', '/image/{day}', controller='images', action='show')
-    map.connect('last', '/images/last', controller='images', action='last')
+    map.connect('show_image', '/photo/{day}', controller='images', action='show')
+    map.connect('last', '/photos/last', controller='images', action='last')
     map.connect('page', '/pages/{page}', controller='pages', action='index')
     map.connect('feed', '/feed.atom', controller='feed', action='index')
+
+    # legacy redirect
+    map.connect('/image/{day}', controller='images', action='show_redir')
+    map.connect('/images/last', controller='images', action='last_redir')
     
     map.connect('admin_home', '/admin/', controller='admin', action='index')
 

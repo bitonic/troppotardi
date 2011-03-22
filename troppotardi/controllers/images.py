@@ -100,3 +100,9 @@ class ImagesController(BaseController):
                                 descending=True,
                                 startkey=day_to_str(datetime.utcnow()))
         return render('/images/xml_list.mako')        
+
+    def show_redir(self, day):
+        redirect(url(controller='images', action='show', day=day))
+
+    def last_redir(self):
+        redirect(url(controller='images', action='last'))
